@@ -31,34 +31,32 @@
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script src="data/services.js"></script>
     <script>
     AOS.init();
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
     const container = document.getElementById('service-details');
-    fetch('data/services.json')
-        .then(r => r.json())
-        .then(list => {
-            const s = list.find(item => item.id === id);
-            if (!s) throw new Error('not found');
-            document.title = `${s.name} - WedaKiriya.lk`;
-            container.innerHTML = `
-                <h1 class="mb-3" data-aos="fade-down">${s.name}</h1>
-                <p class="text-muted" data-aos="fade-down">${s.city}</p>
-                <a href="https://wa.me/94${s.phone.substring(1)}" target="_blank" class="btn btn-success mb-2" data-aos="fade-up">WhatsApp Now</a>
-                <a href="tel:${s.phone}" class="d-block mb-3" data-aos="fade-up">${s.phone}</a>
-                <p data-aos="fade-up">${s.description}</p>
-                <iframe data-aos="fade-up" src="https://www.google.com/maps?q=${encodeURIComponent(s.city)}&output=embed" width="100%" height="300" style="border:0;" allowfullscreen loading="lazy"></iframe>
-                <form class="mt-4" data-aos="fade-up">
-                    <div class="mb-3"><input type="text" class="form-control" placeholder="Your Name"></div>
-                    <div class="mb-3"><input type="email" class="form-control" placeholder="Your Email"></div>
-                    <div class="mb-3"><textarea class="form-control" rows="4" placeholder="Message"></textarea></div>
-                    <button type="submit" class="btn btn-primary">Send</button>
-                </form>`;
-        })
-        .catch(() => {
-            container.textContent = 'Service not found.';
-        });
+    const list = window.servicesData || [];
+    const s = list.find(item => item.id === id);
+    if (s) {
+        document.title = `${s.name} - WedaKiriya.lk`;
+        container.innerHTML = `
+            <h1 class="mb-3" data-aos="fade-down">${s.name}</h1>
+            <p class="text-muted" data-aos="fade-down">${s.city}</p>
+            <a href="https://wa.me/94${s.phone.substring(1)}" target="_blank" class="btn btn-success mb-2" data-aos="fade-up">WhatsApp Now</a>
+            <a href="tel:${s.phone}" class="d-block mb-3" data-aos="fade-up">${s.phone}</a>
+            <p data-aos="fade-up">${s.description}</p>
+            <iframe data-aos="fade-up" src="https://www.google.com/maps?q=${encodeURIComponent(s.city)}&output=embed" width="100%" height="300" style="border:0;" allowfullscreen loading="lazy"></iframe>
+            <form class="mt-4" data-aos="fade-up">
+                <div class="mb-3"><input type="text" class="form-control" placeholder="Your Name"></div>
+                <div class="mb-3"><input type="email" class="form-control" placeholder="Your Email"></div>
+                <div class="mb-3"><textarea class="form-control" rows="4" placeholder="Message"></textarea></div>
+                <button type="submit" class="btn btn-primary">Send</button>
+            </form>`;
+    } else {
+        container.textContent = 'Service not found.';
+    }
     </script>
 </body>
 </html>

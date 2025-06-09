@@ -5,17 +5,15 @@ const container = document.getElementById('serviceContainer');
 const pagination = document.getElementById('pagination');
 const icons = { tailor: '✂️', electrician: '⚡', tutor: '📚', ac: '🛠' };
 const perPage = 8;
-let services = [];
+let services = window.servicesData || [];
 let filtered = [];
 let currentPage = 1;
 
-fetch('data/services.json')
-  .then(r => r.json())
-  .then(data => { services = data; applyFilters(); });
+applyFilters();
 
 function createCard(s) {
   return `<div class="col">
-    <div class="card h-100 service-card" data-name="${s.name.toLowerCase()}" data-city="${s.city.toLowerCase()}" data-category="${s.category}" data-id="${s.id}">
+    <div class="card h-100 service-card shadow-sm rounded-3" data-name="${s.name.toLowerCase()}" data-city="${s.city.toLowerCase()}" data-category="${s.category}" data-id="${s.id}">
       <div class="service-icon mb-2">${icons[s.category] || '🔧'}</div>
       <div class="card-body text-center">
         <h5 class="card-title">${s.name}</h5>
@@ -45,6 +43,10 @@ function renderList() {
   container.innerHTML = '';
   const start = (currentPage - 1) * perPage;
   const pageItems = filtered.slice(start, start + perPage);
+  if (pageItems.length === 0) {
+    container.innerHTML = '<div class="col-12 text-center text-muted">No services match your search. Try another city or category.</div>';
+    return;
+  }
   pageItems.forEach(s => container.insertAdjacentHTML('beforeend', createCard(s)));
 }
 
