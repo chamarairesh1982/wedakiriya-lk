@@ -9,6 +9,12 @@ body {
     padding-top: 72px; /* space for fixed navbar */
 }
 
+@media (max-width: 576px) {
+    body {
+        padding-top: 80px;
+    }
+}
+
 .hero {
     background-image: url('../images/hero.svg');
     background-size: cover;
@@ -17,8 +23,19 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 60vh;
+    min-height: 50vh;
     margin-bottom: 2rem;
+}
+
+.hero::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 40px;
+    background: linear-gradient(to bottom, rgba(248,249,250,0), #f8f9fa);
+    z-index: 1;
 }
 
 .hero .container {
@@ -31,6 +48,7 @@ body {
     position: absolute;
     inset: 0;
     background: rgba(0, 0, 0, 0.4);
+    z-index: 0;
 }
 
 .service-card {
@@ -63,11 +81,19 @@ footer {
 .navbar-nav .nav-link {
     font-size: 0.95rem;
     margin: 0 0.5rem;
+    transition: color 0.2s ease;
+}
+
+.navbar-nav .nav-link:hover {
+    text-decoration: underline;
 }
 
 @media (max-width: 576px) {
     .navbar-nav .nav-link {
         padding: 0.5rem 1rem;
+    }
+    .hero {
+        padding-top: 3rem;
     }
 }
 .category-btn.active {

@@ -16,7 +16,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="index.html">WedaKiriya.lk</a>
+            <a class="navbar-brand fw-bold" href="index.html" aria-label="WedaKiriya home">WedaKiriya.lk</a>
         </div>
     </nav>
     <main class="py-5 mt-4">
@@ -45,7 +45,8 @@
             container.innerHTML = `
                 <h1 class="mb-3" data-aos="fade-down">${s.name}</h1>
                 <p class="text-muted" data-aos="fade-down">${s.city}</p>
-                <a href="https://wa.me/94${s.phone.substring(1)}" target="_blank" class="btn btn-success mb-3" data-aos="fade-up">WhatsApp Now</a>
+                <a href="https://wa.me/94${s.phone.substring(1)}" target="_blank" class="btn btn-success mb-2" data-aos="fade-up">WhatsApp Now</a>
+                <a href="tel:${s.phone}" class="d-block mb-3" data-aos="fade-up">${s.phone}</a>
                 <p data-aos="fade-up">${s.description}</p>
                 <iframe data-aos="fade-up" src="https://www.google.com/maps?q=${encodeURIComponent(s.city)}&output=embed" width="100%" height="300" style="border:0;" allowfullscreen loading="lazy"></iframe>
                 <form class="mt-4" data-aos="fade-up">
