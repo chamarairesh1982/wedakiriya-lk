@@ -11,26 +11,32 @@ body {
     background-size: cover;
     background-position: center;
     position: relative;
-    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    margin-bottom: 2rem;
 }
 
 .hero .container {
     position: relative;
     z-index: 1;
-    padding: 4rem 0;
-
+    padding: 0 1rem;
 }
 
 .hero .overlay {
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.4);
 }
 
 .service-card {
     padding: 1.25rem;
+    border-radius: 0.5rem;
     box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    overflow: hidden;
+    margin: 1rem 0;
 }
 
 .service-card:hover {
@@ -38,8 +44,22 @@ body {
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
 }
 
+.service-card img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto 1rem;
+    border-radius: 0.5rem;
+}
+
 footer {
-    background-color: #007bff;
+    background-color: #3391ff;
+}
+
+.navbar-nav .nav-link {
+    font-size: 0.95rem;
+    margin: 0 0.5rem;
 }
 
 @media (max-width: 576px) {
