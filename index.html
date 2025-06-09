@@ -23,11 +23,15 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link text-white px-lg-2" href="#" aria-label="Home link">Home</a></li>
-                    <li class="nav-item"><a class="nav-link text-white px-lg-2" href="about.html" aria-label="About page">About</a></li>
-                    <li class="nav-item"><a class="nav-link text-white px-lg-2" href="https://forms.gle/placeholder" target="_blank" aria-label="Submit your business">Submit Your Business</a></li>
-                    <li class="nav-item"><a class="nav-link text-white px-lg-2" href="contact.html" aria-label="Go to Contact Page">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link text-white px-lg-2" href="#" aria-label="Home link" data-i18n="nav_home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link text-white px-lg-2" href="about.html" aria-label="About page" data-i18n="nav_about">About</a></li>
+                    <li class="nav-item"><a class="nav-link text-white px-lg-2" href="https://forms.gle/placeholder" target="_blank" aria-label="Submit your business" data-i18n="nav_submit">Submit Your Business</a></li>
+                    <li class="nav-item"><a class="nav-link text-white px-lg-2" href="contact.html" aria-label="Go to Contact Page" data-i18n="nav_contact">Contact</a></li>
                 </ul>
+                <select id="langToggle" class="form-select form-select-sm ms-lg-3" style="width:auto">
+                    <option value="en">EN</option>
+                    <option value="si">සිං</option>
+                </select>
             </div>
         </div>
     </nav>
@@ -35,7 +39,7 @@
         <section class="hero d-flex align-items-center text-center mb-5" aria-label="Hero">
             <div class="overlay"></div>
             <div class="container position-relative">
-                <h1 class="hero-title fw-semibold text-white" data-aos="fade-down">Find the Best Local Services Near You</h1>
+                <h1 class="hero-title fw-semibold text-white" data-aos="fade-down" data-i18n="hero_title">Find the Best Local Services Near You</h1>
             </div>
         </section>
         <section class="services py-5 bg-light mb-5">
@@ -44,36 +48,36 @@
                     <div class="col-md-4">
                         <div class="border rounded p-3 bg-white h-100">
                             <h5 class="mb-0">120+</h5>
-                            <small class="text-muted">Total Services</small>
+                            <small class="text-muted" data-i18n="total_services">Total Services</small>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="border rounded p-3 bg-white h-100">
                             <h5 class="mb-0">30+</h5>
-                            <small class="text-muted">Covered Cities</small>
+                            <small class="text-muted" data-i18n="covered_cities">Covered Cities</small>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="border rounded p-3 bg-white h-100">
-                            <h5 class="mb-0">Updated Weekly</h5>
+                            <h5 class="mb-0" data-i18n="updated_weekly">Updated Weekly</h5>
                         </div>
                     </div>
                 </div>
                 <div class="text-end mb-4">
-                    <a href="https://forms.gle/placeholder" target="_blank" class="btn btn-primary btn-sm">Want your business listed? → Submit Now</a>
+                    <a href="https://forms.gle/placeholder" target="_blank" class="btn btn-primary btn-sm" data-i18n="submit_cta">Want your business listed? → Submit Now</a>
                 </div>
                 <div id="featuredContainer" class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mb-4"></div>
                 <div class="sticky-search bg-light py-3 mb-3">
                     <div class="filter-container mb-2 text-center">
                         <div class="btn-group" role="group" aria-label="Filter services">
-                            <button class="btn btn-outline-secondary btn-sm rounded-pill category-btn" data-filter="tailor" aria-label="Filter Tailor">Tailor</button>
-                            <button class="btn btn-outline-secondary btn-sm rounded-pill category-btn" data-filter="electrician" aria-label="Filter Electrician">Electrician</button>
-                            <button class="btn btn-outline-secondary btn-sm rounded-pill category-btn" data-filter="tutor" aria-label="Filter Tutor">Tutor</button>
-                            <button class="btn btn-outline-secondary btn-sm rounded-pill category-btn" data-filter="ac" aria-label="Filter AC Repair">AC Repair</button>
-                            <button class="btn btn-outline-secondary btn-sm rounded-pill category-btn active" data-filter="all" aria-label="Show All">All</button>
+                            <button class="btn btn-outline-secondary btn-sm rounded-pill category-btn" data-filter="tailor" aria-label="Filter Tailor" data-i18n="filter_tailor">Tailor</button>
+                            <button class="btn btn-outline-secondary btn-sm rounded-pill category-btn" data-filter="electrician" aria-label="Filter Electrician" data-i18n="filter_electrician">Electrician</button>
+                            <button class="btn btn-outline-secondary btn-sm rounded-pill category-btn" data-filter="tutor" aria-label="Filter Tutor" data-i18n="filter_tutor">Tutor</button>
+                            <button class="btn btn-outline-secondary btn-sm rounded-pill category-btn" data-filter="ac" aria-label="Filter AC Repair" data-i18n="filter_ac">AC Repair</button>
+                            <button class="btn btn-outline-secondary btn-sm rounded-pill category-btn active" data-filter="all" aria-label="Show All" data-i18n="filter_all">All</button>
                         </div>
                     </div>
-                    <input type="text" id="searchInput" class="form-control" placeholder="Search by service or city..." aria-label="Search services">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Search by service or city..." aria-label="Search services" data-i18n-placeholder="search_placeholder">
                 </div>
                 <div id="serviceContainer" class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mt-4"></div>
                 <div id="loadMoreTrigger" class="text-center py-3"></div>
@@ -84,7 +88,7 @@
     <footer class="bg-primary text-white text-center py-3 border-top small">
         <div class="container">
             <p class="mb-1">&copy; 2024 WedaKiriya.lk</p>
-            <a class="text-white" href="https://forms.gle/placeholder" target="_blank">Submit Your Business</a>
+            <a class="text-white" href="https://forms.gle/placeholder" target="_blank" data-i18n="nav_submit">Submit Your Business</a>
             <span class="mx-2">|</span>
             <a class="text-white" href="#">Privacy Policy</a>
             <span class="mx-2">|</span>
@@ -94,6 +98,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
     <script src="data/services.js"></script>
+    <script src="js/lang.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>

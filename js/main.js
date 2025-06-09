@@ -23,8 +23,8 @@ function createCard(s, featured = false) {
         <p class="card-text">${s.city}</p>
         <a href="tel:${s.phone}" class="d-block small mb-3"><span class="me-1">📞</span>${s.phone}</a>
         <div class="contact-btns d-flex justify-content-center gap-2">
-          <a href="https://wa.me/94${s.phone.substring(1)}" target="_blank" class="btn btn-success btn-sm flex-fill flex-sm-auto">📱 WhatsApp Now</a>
-          <a href="service.html?id=${s.id}" class="btn btn-outline-primary btn-sm flex-fill flex-sm-auto">View Details</a>
+          <a href="https://wa.me/94${s.phone.substring(1)}" target="_blank" class="btn btn-success btn-sm flex-fill flex-sm-auto">📱 ${t('whatsapp_now')}</a>
+          <a href="service.html?id=${s.id}" class="btn btn-outline-primary btn-sm flex-fill flex-sm-auto">${t('view_details')}</a>
         </div>
       </div>
     </div>
@@ -54,7 +54,7 @@ function renderNextPage(reset = false) {
   const start = (currentPage - 1) * perPage;
   const pageItems = filtered.slice(start, start + perPage);
   if (pageItems.length === 0 && reset) {
-    container.innerHTML = '<div class="col-12 text-center text-muted">No services match your search. Try another city or category.</div>';
+    container.innerHTML = `<div class="col-12 text-center text-muted">${t('no_results')}</div>`;
     loadMoreTrigger.classList.add('d-none');
     return;
   }

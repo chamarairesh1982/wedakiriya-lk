@@ -19,19 +19,23 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-          <li class="nav-item"><a class="nav-link text-white px-lg-2" href="index.html" aria-label="Home link">Home</a></li>
-          <li class="nav-item"><a class="nav-link text-white px-lg-2" href="about.html" aria-label="About page">About</a></li>
-          <li class="nav-item"><a class="nav-link text-white px-lg-2" href="https://forms.gle/placeholder" target="_blank" aria-label="Submit your business">Submit Your Business</a></li>
-          <li class="nav-item"><a class="nav-link text-white px-lg-2" href="#" aria-current="page">Contact</a></li>
+          <li class="nav-item"><a class="nav-link text-white px-lg-2" href="index.html" aria-label="Home link" data-i18n="nav_home">Home</a></li>
+          <li class="nav-item"><a class="nav-link text-white px-lg-2" href="about.html" aria-label="About page" data-i18n="nav_about">About</a></li>
+          <li class="nav-item"><a class="nav-link text-white px-lg-2" href="https://forms.gle/placeholder" target="_blank" aria-label="Submit your business" data-i18n="nav_submit">Submit Your Business</a></li>
+          <li class="nav-item"><a class="nav-link text-white px-lg-2" href="#" aria-current="page" data-i18n="nav_contact">Contact</a></li>
         </ul>
+        <select id="langToggle" class="form-select form-select-sm ms-lg-3" style="width:auto">
+          <option value="en">EN</option>
+          <option value="si">සිං</option>
+        </select>
       </div>
     </div>
   </nav>
 
   <section class="page-hero text-center">
     <div class="container">
-      <h1 class="fw-bold heading-shadow mb-3" data-aos="fade-down">Contact Us</h1>
-      <p class="lead text-muted" data-aos="fade-up">Have a question, suggestion, or issue? Get in touch below.</p>
+      <h1 class="fw-bold heading-shadow mb-3" data-aos="fade-down" data-i18n="contact_heading">Contact Us</h1>
+      <p class="lead text-muted" data-aos="fade-up" data-i18n="contact_p">Have a question, suggestion, or issue? Get in touch below.</p>
     </div>
   </section>
 
@@ -47,19 +51,19 @@
           <div class="card shadow-sm p-4">
               <form>
                 <div class="mb-3">
-                  <label for="name" class="form-label">Full Name</label>
-                  <input type="text" class="form-control" id="name" placeholder="Enter your name">
+                  <label for="name" class="form-label" data-i18n="form_name">Full Name</label>
+                  <input type="text" class="form-control" id="name" placeholder="Enter your name" data-i18n-placeholder="form_name">
                 </div>
                 <div class="mb-3">
-                  <label for="email" class="form-label">Email Address</label>
-                  <input type="email" class="form-control" id="email" placeholder="name@example.com">
+                  <label for="email" class="form-label" data-i18n="form_email">Email Address</label>
+                  <input type="email" class="form-control" id="email" placeholder="name@example.com" data-i18n-placeholder="form_email">
                 </div>
                 <div class="mb-3">
-                  <label for="message" class="form-label">Message</label>
-                  <textarea class="form-control" id="message" rows="4" placeholder="Your message"></textarea>
+                  <label for="message" class="form-label" data-i18n="form_message">Message</label>
+                  <textarea class="form-control" id="message" rows="4" placeholder="Your message" data-i18n-placeholder="form_message"></textarea>
                 </div>
                 <div class="d-grid">
-                  <button type="submit" class="btn btn-primary">Submit</button>
+                  <button type="submit" class="btn btn-primary" data-i18n="form_submit">Submit</button>
                 </div>
               </form>
           </div>
@@ -71,7 +75,7 @@
   <footer class="bg-primary text-white text-center py-3 border-top small">
     <div class="container">
       <p class="mb-1">&copy; 2024 WedaKiriya.lk</p>
-      <a class="text-white" href="https://forms.gle/placeholder" target="_blank">Submit Your Business</a>
+      <a class="text-white" href="https://forms.gle/placeholder" target="_blank" data-i18n="nav_submit">Submit Your Business</a>
       <span class="mx-2">|</span>
       <a class="text-white" href="#">Privacy Policy</a>
       <span class="mx-2">|</span>
@@ -81,6 +85,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script src="js/lang.js"></script>
   <script>
     AOS.init();
   </script>
