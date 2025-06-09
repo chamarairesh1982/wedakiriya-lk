@@ -17,39 +17,39 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="#">WedaKiriya.lk</a>
+            <a class="navbar-brand fw-bold" href="#" aria-label="WedaKiriya home">WedaKiriya.lk</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link text-white px-lg-2" href="#">Home</a></li>
-                    <li class="nav-item"><a class="nav-link text-white px-lg-2" href="#about">About</a></li>
-                    <li class="nav-item"><a class="nav-link text-white px-lg-2" href="https://forms.gle/placeholder" target="_blank">Submit Your Business</a></li>
-                    <li class="nav-item"><a class="nav-link text-white px-lg-2" href="#contact">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link text-white px-lg-2" href="#" aria-label="Home link">Home</a></li>
+                    <li class="nav-item"><a class="nav-link text-white px-lg-2" href="#about" aria-label="About section">About</a></li>
+                    <li class="nav-item"><a class="nav-link text-white px-lg-2" href="https://forms.gle/placeholder" target="_blank" aria-label="Submit your business">Submit Your Business</a></li>
+                    <li class="nav-item"><a class="nav-link text-white px-lg-2" href="#contact" aria-label="Contact section">Contact</a></li>
                 </ul>
             </div>
         </div>
     </nav>
     <main>
-        <section class="hero d-flex align-items-center text-center">
+        <section class="hero d-flex align-items-center text-center" aria-label="Hero">
             <div class="overlay"></div>
             <div class="container position-relative">
-                <h1 class="display-4 fw-bold text-white">Find the Best Local Services Near You</h1>
+                <h1 class="display-4 fw-bold text-white" data-aos="fade-down">Find the Best Local Services Near You</h1>
             </div>
         </section>
         <section class="services py-5 bg-light mt-4">
             <div class="container">
-                <input type="text" id="searchInput" class="form-control mb-3" placeholder="Search by service or city">
-                <div class="mb-3">
-                    <div class="btn-group" role="group" aria-label="Filter">
-                        <button class="btn btn-outline-secondary btn-sm category-btn active" data-filter="all">All</button>
-                        <button class="btn btn-outline-secondary btn-sm category-btn" data-filter="tailor">Tailor</button>
-                        <button class="btn btn-outline-secondary btn-sm category-btn" data-filter="electrician">Electrician</button>
-                        <button class="btn btn-outline-secondary btn-sm category-btn" data-filter="tutor">Tutor</button>
-                        <button class="btn btn-outline-secondary btn-sm category-btn" data-filter="ac">AC Repair</button>
+                <div class="mb-3 text-center">
+                    <div class="btn-group" role="group" aria-label="Filter services">
+                        <button class="btn btn-outline-secondary btn-sm rounded-pill category-btn" data-filter="tailor" aria-label="Filter Tailor">Tailor</button>
+                        <button class="btn btn-outline-secondary btn-sm rounded-pill category-btn" data-filter="electrician" aria-label="Filter Electrician">Electrician</button>
+                        <button class="btn btn-outline-secondary btn-sm rounded-pill category-btn" data-filter="tutor" aria-label="Filter Tutor">Tutor</button>
+                        <button class="btn btn-outline-secondary btn-sm rounded-pill category-btn" data-filter="ac" aria-label="Filter AC Repair">AC Repair</button>
+                        <button class="btn btn-outline-secondary btn-sm rounded-pill category-btn active" data-filter="all" aria-label="Show All">All</button>
                     </div>
                 </div>
+                <input type="text" id="searchInput" class="form-control mb-3" placeholder="Search by service or city..." aria-label="Search services">
                 <div class="row g-4">
                     <div class="col-12 col-sm-6 col-lg-3">
                         <div class="card h-100 service-card" data-aos="fade-up" data-name="abc tailors" data-city="colombo" data-category="tailor" data-id="abc-tailors">
@@ -57,6 +57,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">ABC Tailors</h5>
                                 <p class="card-text">Colombo</p>
+                                <a href="tel:0771234567" class="d-block small mb-1">0771234567</a>
                                 <a href="https://wa.me/94771234567" target="_blank" class="btn btn-success btn-sm mb-2">WhatsApp Now</a><br><a href="service.html?id=abc-tailors" class="btn btn-primary btn-sm">View Details</a>
                             </div>
                         </div>
@@ -67,6 +68,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">XYZ Electricians</h5>
                                 <p class="card-text">Kandy</p>
+                                <a href="tel:0719876543" class="d-block small mb-1">0719876543</a>
                                 <a href="https://wa.me/94719876543" target="_blank" class="btn btn-success btn-sm mb-2">WhatsApp Now</a><br><a href="service.html?id=xyz-electricians" class="btn btn-primary btn-sm">View Details</a>
                             </div>
                         </div>
@@ -77,6 +79,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">Best Tutors</h5>
                                 <p class="card-text">Galle</p>
+                                <a href="tel:0755555555" class="d-block small mb-1">0755555555</a>
                                 <a href="https://wa.me/94755555555" target="_blank" class="btn btn-success btn-sm mb-2">WhatsApp Now</a><br><a href="service.html?id=best-tutors" class="btn btn-primary btn-sm">View Details</a>
                             </div>
                         </div>
@@ -87,6 +90,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">CoolAir Repairs</h5>
                                 <p class="card-text">Negombo</p>
+                                <a href="tel:0761111111" class="d-block small mb-1">0761111111</a>
                                 <a href="https://wa.me/94761111111" target="_blank" class="btn btn-success btn-sm mb-2">WhatsApp Now</a><br><a href="service.html?id=coolair-repairs" class="btn btn-primary btn-sm">View Details</a>
                             </div>
                         </div>
