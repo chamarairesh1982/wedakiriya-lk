@@ -23,8 +23,9 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 60px 0 40px;
-    min-height: 40vh;
+    padding: 60px 0;
+    height: clamp(300px, 40vh, 400px);
+    overflow: hidden;
     margin-bottom: 1.5rem;
 }
 
@@ -36,20 +37,23 @@ body {
     bottom: -1px;
     height: 40px;
     background: linear-gradient(to bottom, rgba(248,249,250,0), #f8f9fa);
-    z-index: 1;
+    z-index: 2;
 }
 
 .hero .container {
     position: relative;
-    z-index: 1;
+    z-index: 3;
     padding: 0 1rem;
 }
 
 .hero .overlay {
     position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.4);
-    z-index: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.35));
+    z-index: 1;
 }
 
 .hero-title {
@@ -105,8 +109,8 @@ footer {
         padding: 0.5rem 1rem;
     }
     .hero {
-        padding: 40px 0 20px;
-        min-height: 30vh;
+        padding: 40px 0;
+        height: clamp(200px, 30vh, 300px);
     }
 }
 .category-btn.active {
