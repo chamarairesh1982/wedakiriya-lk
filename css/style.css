@@ -1,24 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
 body {
-    background-color: #ffffff;
-    font-family: Arial, sans-serif;
-}
-
-header {
-    background-color: #007bff;
-}
-
-header .nav-link {
-    color: #ffffff;
-    margin-right: 1rem;
+    font-family: 'Poppins', sans-serif;
+    background-color: #fdfdfd;
+    padding-top: 72px; /* space for fixed navbar */
 }
 
 .hero {
-    background-color: #f8f9fa;
-    padding: 4rem 0;
+    background-image: url('../images/hero.svg');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    min-height: 300px;
 }
 
-.card {
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+.hero .container {
+    position: relative;
+    z-index: 1;
+    padding: 4rem 0;
+
+}
+
+.hero .overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.service-card {
+    padding: 1rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.service-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
 }
 
 footer {
@@ -26,9 +43,7 @@ footer {
 }
 
 @media (max-width: 576px) {
-    header .nav-link {
-        margin-right: 0;
-        display: block;
-        padding: 0.25rem 0;
+    .navbar-nav .nav-link {
+        padding: 0.5rem 1rem;
     }
 }
