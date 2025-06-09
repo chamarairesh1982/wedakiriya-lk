@@ -2,6 +2,8 @@
 
 A simple static directory to showcase local services in Sri Lanka. Built with HTML, CSS and [Bootstrap 5](https://getbootstrap.com/). This repository is ready to be hosted on GitHub Pages.
 
+You can view the live site at [https://chamarairesh1982.github.io/wedakiriya-lk/](https://chamarairesh1982.github.io/wedakiriya-lk/).
+
 ## Structure
 - `index.html` – main page listing sample services
 - `css/style.css` – custom styling
