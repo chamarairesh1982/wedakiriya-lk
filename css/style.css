@@ -150,6 +150,28 @@ footer {
     margin-top: 10px;
 }
 
+.sticky-search {
+    position: sticky;
+    top: 72px;
+    z-index: 1020;
+}
+
+@media (max-width: 576px) {
+    .sticky-search {
+        top: 80px;
+    }
+}
+
+.featured-card {
+    border: 2px solid #0d6efd;
+}
+
+.featured-card .service-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 32px;
+}
+
 /* subtle shadow for hero headings */
 .heading-shadow {
     text-shadow: 0 1px 2px rgba(0,0,0,0.1);
