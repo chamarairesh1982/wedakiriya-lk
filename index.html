@@ -40,6 +40,28 @@
         </section>
         <section class="services py-5 bg-light mb-5">
             <div class="container">
+                <div class="row text-center g-3 mb-4" id="summaryRow">
+                    <div class="col-md-4">
+                        <div class="border rounded p-3 bg-white h-100">
+                            <h5 class="mb-0">120+</h5>
+                            <small class="text-muted">Total Services</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="border rounded p-3 bg-white h-100">
+                            <h5 class="mb-0">30+</h5>
+                            <small class="text-muted">Covered Cities</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="border rounded p-3 bg-white h-100">
+                            <h5 class="mb-0">Updated Weekly</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-end mb-4">
+                    <a href="https://forms.gle/placeholder" target="_blank" class="btn btn-primary btn-sm">Want your business listed? → Submit Now</a>
+                </div>
                 <div class="filter-container mb-3 text-center">
                     <div class="btn-group" role="group" aria-label="Filter services">
                         <button class="btn btn-outline-secondary btn-sm rounded-pill category-btn" data-filter="tailor" aria-label="Filter Tailor">Tailor</button>
@@ -50,64 +72,10 @@
                     </div>
                 </div>
                 <input type="text" id="searchInput" class="form-control mb-3" placeholder="Search by service or city..." aria-label="Search services">
-                <div class="row g-4 mt-4">
-                    <div class="col-12 col-sm-6 col-lg-3">
-                        <div class="card h-100 service-card" data-aos="fade-up" data-name="abc tailors" data-city="colombo" data-category="tailor" data-id="abc-tailors">
-                            <div class="service-icon mb-2">✂️</div>
-                            <div class="card-body text-center">
-                                <h5 class="card-title">ABC Tailors</h5>
-                                <p class="card-text">Colombo</p>
-                                <a href="tel:0771234567" class="d-block small mb-3"><span class="me-1">📞</span>0771234567</a>
-                                <div class="contact-btns d-flex justify-content-center gap-2">
-                                    <a href="https://wa.me/94771234567" target="_blank" class="btn btn-success btn-sm flex-fill flex-sm-auto">📱 WhatsApp Now</a>
-                                    <a href="service.html?id=abc-tailors" class="btn btn-outline-primary btn-sm flex-fill flex-sm-auto">View Details</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-lg-3">
-                        <div class="card h-100 service-card" data-aos="fade-up" data-name="xyz electricians" data-city="kandy" data-category="electrician" data-id="xyz-electricians">
-                            <div class="service-icon mb-2">⚡</div>
-                            <div class="card-body text-center">
-                                <h5 class="card-title">XYZ Electricians</h5>
-                                <p class="card-text">Kandy</p>
-                                <a href="tel:0719876543" class="d-block small mb-3"><span class="me-1">📞</span>0719876543</a>
-                                <div class="contact-btns d-flex justify-content-center gap-2">
-                                    <a href="https://wa.me/94719876543" target="_blank" class="btn btn-success btn-sm flex-fill flex-sm-auto">📱 WhatsApp Now</a>
-                                    <a href="service.html?id=xyz-electricians" class="btn btn-outline-primary btn-sm flex-fill flex-sm-auto">View Details</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-lg-3">
-                        <div class="card h-100 service-card" data-aos="fade-up" data-name="best tutors" data-city="galle" data-category="tutor" data-id="best-tutors">
-                            <div class="service-icon mb-2">📚</div>
-                            <div class="card-body text-center">
-                                <h5 class="card-title">Best Tutors</h5>
-                                <p class="card-text">Galle</p>
-                                <a href="tel:0755555555" class="d-block small mb-3"><span class="me-1">📞</span>0755555555</a>
-                                <div class="contact-btns d-flex justify-content-center gap-2">
-                                    <a href="https://wa.me/94755555555" target="_blank" class="btn btn-success btn-sm flex-fill flex-sm-auto">📱 WhatsApp Now</a>
-                                    <a href="service.html?id=best-tutors" class="btn btn-outline-primary btn-sm flex-fill flex-sm-auto">View Details</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-lg-3">
-                        <div class="card h-100 service-card" data-aos="fade-up" data-name="coolair repairs" data-city="negombo" data-category="ac" data-id="coolair-repairs">
-                            <div class="service-icon mb-2">🛠</div>
-                            <div class="card-body text-center">
-                                <h5 class="card-title">CoolAir Repairs</h5>
-                                <p class="card-text">Negombo</p>
-                                <a href="tel:0761111111" class="d-block small mb-3"><span class="me-1">📞</span>0761111111</a>
-                                <div class="contact-btns d-flex justify-content-center gap-2">
-                                    <a href="https://wa.me/94761111111" target="_blank" class="btn btn-success btn-sm flex-fill flex-sm-auto">📱 WhatsApp Now</a>
-                                    <a href="service.html?id=coolair-repairs" class="btn btn-outline-primary btn-sm flex-fill flex-sm-auto">View Details</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <div id="serviceContainer" class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mt-4"></div>
+                <nav aria-label="Page navigation">
+                    <ul id="pagination" class="pagination justify-content-center mt-4"></ul>
+                </nav>
             </div>
         </section>
     </main>
