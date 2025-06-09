@@ -1,0 +1,22 @@
+[
+  {
+    "name": "ABC Tailors",
+    "city": "Colombo",
+    "phone": "0771234567"
+  },
+  {
+    "name": "XYZ Electricians",
+    "city": "Kandy",
+    "phone": "0719876543"
+  },
+  {
+    "name": "Best Tutors",
+    "city": "Galle",
+    "phone": "0755555555"
+  },
+  {
+    "name": "CoolAir Repairs",
+    "city": "Negombo",
+    "phone": "0761111111"
+  }
+]
