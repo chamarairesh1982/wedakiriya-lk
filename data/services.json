@@ -1,22 +1,34 @@
 [
   {
+    "id": "abc-tailors",
     "name": "ABC Tailors",
     "city": "Colombo",
-    "phone": "0771234567"
+    "phone": "0771234567",
+    "category": "tailor",
+    "description": "Professional tailoring services."
   },
   {
+    "id": "xyz-electricians",
     "name": "XYZ Electricians",
     "city": "Kandy",
-    "phone": "0719876543"
+    "phone": "0719876543",
+    "category": "electrician",
+    "description": "Qualified electricians for all jobs."
   },
   {
+    "id": "best-tutors",
     "name": "Best Tutors",
     "city": "Galle",
-    "phone": "0755555555"
+    "phone": "0755555555",
+    "category": "tutor",
+    "description": "Private tutoring for all subjects."
   },
   {
+    "id": "coolair-repairs",
     "name": "CoolAir Repairs",
     "city": "Negombo",
-    "phone": "0761111111"
+    "phone": "0761111111",
+    "category": "ac",
+    "description": "Expert AC repair services."
   }
 ]

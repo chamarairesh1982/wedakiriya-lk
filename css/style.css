@@ -1,3 +1,6 @@
+html {
+    scroll-behavior: smooth;
+}
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
 body {
@@ -66,4 +69,15 @@ footer {
     .navbar-nav .nav-link {
         padding: 0.5rem 1rem;
     }
+}
+.category-btn.active {
+    background-color: #3391ff;
+    color: #fff;
+}
+.btn {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
 }
