@@ -8,7 +8,7 @@ You can view the live site at [https://chamarairesh1982.github.io/wedakiriya-lk/
 - `index.html` – main page listing sample services
 - `css/style.css` – custom styling
 - `images/` – contains local SVG icons for the hero section and service cards
-- `data/services.json` – sample data that could be used for future dynamic content
+- `data/services.js` – small JS array of service listings used by the homepage
 
 To preview locally, simply open `index.html` in a browser. No build step or server is required.
 
