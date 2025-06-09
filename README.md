@@ -7,9 +7,9 @@ You can view the live site at [https://chamarairesh1982.github.io/wedakiriya-lk/
 ## Structure
 - `index.html` – main page listing sample services
 - `css/style.css` – custom styling
-- `images/` – empty folder reserved for custom images (uses remote placeholders by default)
+- `images/` – contains local SVG icons for the hero section and service cards
 - `data/services.json` – sample data that could be used for future dynamic content
 
 To preview locally, simply open `index.html` in a browser. No build step or server is required.
 
-The service cards load example images from `https://via.placeholder.com`, so no images are stored in this repository. Add your own images inside the `images/` folder if desired.
+The repository now ships with small SVG icons, so it works offline without external image URLs.
