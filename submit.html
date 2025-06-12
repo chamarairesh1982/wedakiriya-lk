@@ -38,43 +38,57 @@
     <div id="status"></div>
   </form>
 <script>
-  document.getElementById('bizForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const data = {
-      name: document.getElementById('business_name').value,
-      owner: document.getElementById('owner').value,
-      category: document.getElementById('category').value,
-      contact: document.getElementById('contact').value,
-      city: document.getElementById('location').value,
-      description: document.getElementById('description').value
-    };
+  (async () => {
     const statusEl = document.getElementById('status');
-    statusEl.textContent = 'Submitting...';
     try {
-      const res = await fetch('https://cabvtaivshgjhvyapbwr.supabase.co/rest/v1/businesses', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'apikey': 'YOUR_ANON_KEY',
-          'Authorization': 'Bearer YOUR_ANON_KEY',
-          'Prefer': 'return=minimal'
-        },
-        body: JSON.stringify(data)
+      const cfgRes = await fetch('config.json');
+      if (!cfgRes.ok) throw new Error('Failed to load config');
+      const cfg = await cfgRes.json();
+      const SUPABASE_URL = cfg.SUPABASE_URL;
+      const SUPABASE_ANON_KEY = cfg.SUPABASE_ANON_KEY;
+
+      document.getElementById('bizForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const data = {
+          name: document.getElementById('business_name').value,
+          owner: document.getElementById('owner').value,
+          category: document.getElementById('category').value,
+          contact: document.getElementById('contact').value,
+          city: document.getElementById('location').value,
+          description: document.getElementById('description').value
+        };
+        statusEl.textContent = 'Submitting...';
+        statusEl.style.color = 'initial';
+        try {
+          const res = await fetch(`${SUPABASE_URL}/rest/v1/businesses`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'apikey': SUPABASE_ANON_KEY,
+              'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+              'Prefer': 'return=minimal'
+            },
+            body: JSON.stringify(data)
+          });
+          if (res.ok) {
+            statusEl.textContent = 'Submitted successfully!';
+            statusEl.style.color = 'green';
+            document.getElementById('bizForm').reset();
+          } else {
+            const txt = await res.text();
+            statusEl.textContent = 'Error: ' + txt;
+            statusEl.style.color = 'red';
+          }
+        } catch (err) {
+          statusEl.textContent = 'Error: ' + err.message;
+          statusEl.style.color = 'red';
+        }
       });
-      if (res.ok) {
-        statusEl.textContent = 'Submitted successfully!';
-        statusEl.style.color = 'green';
-        document.getElementById('bizForm').reset();
-      } else {
-        const txt = await res.text();
-        statusEl.textContent = 'Error: ' + txt;
-        statusEl.style.color = 'red';
-      }
     } catch (err) {
-      statusEl.textContent = 'Error: ' + err.message;
+      statusEl.textContent = 'Error loading configuration';
       statusEl.style.color = 'red';
     }
-  });
+  })();
 </script>
 </body>
 </html>
