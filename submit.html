@@ -1,35 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Submit Your Business | WedaKiriya.lk</title>
   <style>
-    body {font-family: Arial, sans-serif; background:#f8f9fa; padding:20px;}
-    form {max-width:600px; margin:0 auto; background:#fff; padding:20px; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.1);}
-    label {display:block; margin-bottom:10px; font-weight:bold;}
-    input, textarea {width:100%; padding:8px; margin-top:4px; border:1px solid #ccc; border-radius:4px; box-sizing:border-box;}
-    button {margin-top:10px; padding:10px 20px; border:none; background:#0d6efd; color:#fff; border-radius:4px; cursor:pointer;}
-    #status {margin-top:10px; font-weight:bold;}
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8f9fa;
+      padding: 20px;
+    }
+    form {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      border: none;
+      background: #0d6efd;
+      color: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    #status {
+      margin-top: 10px;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
-  <h1 style="text-align:center">Submit Your Business / ඔබේ ව්‍යාපාරය යවන්න</h1>
+  <h1 style="text-align: center">Submit Your Business / ඔබේ ව්‍යාපාරය යවන්න</h1>
   <form id="bizForm">
     <label>Business Name / ව්‍යාපාරයේ නම
-      <input type="text" id="business_name" required>
+      <input type="text" id="business_name" required />
     </label>
     <label>Owner Name / හිමිකරුගේ නම
-      <input type="text" id="owner" required>
+      <input type="text" id="owner" required />
     </label>
     <label>Category / ව්‍යාපාර වර්ගය
-      <input type="text" id="category" required>
+      <input type="text" id="category" required />
     </label>
     <label>Contact Info / දුරකථන හෝ විද්‍යුත් ලිපිනය
-      <input type="text" id="contact" required>
+      <input type="text" id="contact" required />
     </label>
     <label>Location / නගරය
-      <input type="text" id="location" required>
+      <input type="text" id="location" required />
     </label>
     <label>Description / විස්තරය
       <textarea id="description" rows="4" required></textarea>
@@ -37,58 +70,63 @@
     <button type="submit">Submit / යවන්න</button>
     <div id="status"></div>
   </form>
-<script>
-  (async () => {
-    const statusEl = document.getElementById('status');
-    try {
-      const cfgRes = await fetch('config.json');
-      if (!cfgRes.ok) throw new Error('Failed to load config');
-      const cfg = await cfgRes.json();
-      const SUPABASE_URL = cfg.SUPABASE_URL;
-      const SUPABASE_ANON_KEY = cfg.SUPABASE_ANON_KEY;
 
-      document.getElementById('bizForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const data = {
-          name: document.getElementById('business_name').value,
-          owner: document.getElementById('owner').value,
-          category: document.getElementById('category').value,
-          contact: document.getElementById('contact').value,
-          city: document.getElementById('location').value,
-          description: document.getElementById('description').value
-        };
-        statusEl.textContent = 'Submitting...';
-        statusEl.style.color = 'initial';
-        try {
-          const res = await fetch(`${SUPABASE_URL}/rest/v1/businesses`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'apikey': SUPABASE_ANON_KEY,
-              'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-              'Prefer': 'return=minimal'
-            },
-            body: JSON.stringify(data)
-          });
-          if (res.ok) {
-            statusEl.textContent = 'Submitted successfully!';
-            statusEl.style.color = 'green';
-            document.getElementById('bizForm').reset();
-          } else {
-            const txt = await res.text();
-            statusEl.textContent = 'Error: ' + txt;
-            statusEl.style.color = 'red';
+  <script>
+    (async () => {
+      const statusEl = document.getElementById("status");
+      try {
+        const cfgRes = await fetch("config.json");
+        if (!cfgRes.ok) throw new Error("Failed to load config");
+        const cfg = await cfgRes.json();
+
+        const SUPABASE_URL = cfg.SUPABASE_URL;
+        const SUPABASE_ANON_KEY = cfg.SUPABASE_ANON_KEY;
+
+        document.getElementById("bizForm").addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const data = {
+            name: document.getElementById("business_name").value,
+            owner: document.getElementById("owner").value,
+            category: document.getElementById("category").value,
+            contact: document.getElementById("contact").value,
+            location: document.getElementById("location").value,
+            description: document.getElementById("description").value,
+          };
+
+          statusEl.textContent = "Submitting...";
+          statusEl.style.color = "black";
+
+          try {
+            const res = await fetch(`${SUPABASE_URL}/rest/v1/businesses`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "apikey": SUPABASE_ANON_KEY,
+                "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+                "Prefer": "return=minimal",
+              },
+              body: JSON.stringify(data),
+            });
+
+            if (res.ok) {
+              statusEl.textContent = "✅ Submitted successfully!";
+              statusEl.style.color = "green";
+              e.target.reset();
+            } else {
+              const errorText = await res.text();
+              statusEl.textContent = "❌ Error: " + errorText;
+              statusEl.style.color = "red";
+            }
+          } catch (err) {
+            statusEl.textContent = "❌ Network error: " + err.message;
+            statusEl.style.color = "red";
           }
-        } catch (err) {
-          statusEl.textContent = 'Error: ' + err.message;
-          statusEl.style.color = 'red';
-        }
-      });
-    } catch (err) {
-      statusEl.textContent = 'Error loading configuration';
-      statusEl.style.color = 'red';
-    }
-  })();
-</script>
+        });
+      } catch (err) {
+        statusEl.textContent = "❌ Error loading config: " + err.message;
+        statusEl.style.color = "red";
+      }
+    })();
+  </script>
 </body>
 </html>
