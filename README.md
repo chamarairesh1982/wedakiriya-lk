@@ -21,5 +21,11 @@ The repository now ships with small SVG icons, so it works offline without exter
 
 ## Connecting to Supabase
 1. Create a table called `businesses` in your Supabase project with columns that match the fields in `submit.html` (e.g. `name`, `owner`, `category`, `contact`, `city`, `description`).
-2. In `submit.html`, replace `YOUR_ANON_KEY` with your project's **anon** API key.
-3. The form sends a POST request directly to Supabase using `fetch()`.
+2. Create a `config.json` file next to `submit.html` containing your Supabase URL and anon key:
+   ```json
+   {
+     "SUPABASE_URL": "https://your-project.supabase.co",
+     "SUPABASE_ANON_KEY": "your_anon_key_here"
+   }
+   ```
+3. `submit.html` loads this file with `fetch('config.json')` to initialize the form submission request.
