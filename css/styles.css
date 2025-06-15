@@ -263,3 +263,16 @@ footer {
 .fw-bold { font-weight:700; }
 .form-label { display:block; font-weight:600; margin-bottom:0.25rem; }
 .border-top { border-top:1px solid #d1d5db; }
+
+/* Gallery */
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+.gallery-img {
+  width: 100%;
+  max-width: 150px;
+  border-radius: 0.5rem;
+}
