@@ -53,6 +53,10 @@ window.translations = {
     submit_success: "Submitted successfully!",
     network_error: "Network error:",
     config_error: "Error loading config:",
+    comments_heading: "Comments",
+    comment_placeholder: "Write a comment...",
+    post_comment: "Post Comment",
+    report_comment: "Report",
     error_prefix: "Error:"
   },
   si: {
@@ -109,6 +113,10 @@ window.translations = {
     submit_success: "සාර්ථකව යවා ඇත!",
     network_error: "ජාල ගැටලුව:",
     config_error: "වින්‍යාසය පූරණය කිරීමේ දෝෂය:",
+    comments_heading: "අදහස්",
+    comment_placeholder: "අදහස ලියන්න...",
+    post_comment: "අදහස යවන්න",
+    report_comment: "වාර්තා කරන්න",
     error_prefix: "දෝෂය:"
   }
 };

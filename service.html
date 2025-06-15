@@ -66,7 +66,16 @@ import { getSupabase } from "./js/supabaseClient.js";
                 <div class="mb-3"><input type="email" class="form-control" placeholder="${t('form_email')}"></div>
                 <div class="mb-3"><textarea class="form-control" rows="4" placeholder="${t('form_message')}"></textarea></div>
                 <button type="submit" class="btn btn-primary">${t('send')}</button>
-            </form>`;
+            </form>
+            <div id="comments-section" class="mt-5">
+              <h2>${t('comments_heading')}</h2>
+              <div id="commentsList"></div>
+              <form id="commentForm" class="mt-2">
+                <textarea id="commentText" class="form-control mb-2" data-i18n-placeholder="comment_placeholder"></textarea>
+                <button type="submit" class="btn btn-primary">${t('post_comment')}</button>
+              </form>
+            </div>`;
+          if (typeof applyTranslations === 'function') applyTranslations();
         const shareUrl = location.href;
         document.getElementById('waShare').href = `https://wa.me/?text=${encodeURIComponent(s.name + ' - ' + shareUrl)}`;
         document.getElementById('fbShare').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
@@ -77,6 +86,39 @@ import { getSupabase } from "./js/supabaseClient.js";
           await supabase.from('reports').insert({ listing_id:id, user_id:user.id, reason:'user report' });
           alert('Reported');
         };
+
+        async function loadComments(){
+          const { data } = await supabase.from('comments').select('id,content').eq('listing_id', id).order('created_at');
+          const listEl = document.getElementById('commentsList');
+          listEl.innerHTML = '';
+          (data || []).forEach(c => {
+            const div = document.createElement('div');
+            div.className = 'border p-2 mb-2';
+            div.innerHTML = `<p>${c.content}</p><button class="btn btn-sm btn-link text-red-500 report-comment" data-id="${c.id}">${t('report_comment')}</button>`;
+            listEl.appendChild(div);
+          });
+          document.querySelectorAll('.report-comment').forEach(btn => {
+            btn.onclick = async () => {
+              const { data: { user } } = await supabase.auth.getUser();
+              if(!user){ alert('Login first'); return; }
+              await supabase.from('comment_reports').insert({ comment_id:btn.dataset.id, user_id:user.id, reason:'user report' });
+              alert('Reported');
+            };
+          });
+        }
+
+        await loadComments();
+
+        document.getElementById('commentForm').addEventListener('submit', async e => {
+          e.preventDefault();
+          const txt = document.getElementById('commentText').value.trim();
+          if(!txt) return;
+          const { data: { user } } = await supabase.auth.getUser();
+          if(!user){ alert('Login first'); return; }
+          await supabase.from('comments').insert({ listing_id:id, user_id:user.id, content:txt });
+          document.getElementById('commentText').value = '';
+          await loadComments();
+        });
     } else {
         container.textContent = t('not_found');
     }
