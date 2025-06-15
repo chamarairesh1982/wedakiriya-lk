@@ -24,6 +24,7 @@
       <a class="block py-2" href="submit.html" data-i18n="nav_submit">Submit Your Business</a>
       <a class="block py-2" href="contact.html" data-i18n="nav_contact">Contact</a>
       <a class="block py-2" href="cities.html">Cities</a>
+      <a class="block py-2 hidden" href="dashboard.html" id="dashboardLink">Dashboard</a>
       <a class="block py-2" href="login.html" id="loginLink">Login</a>
     </div>
     <select id="langToggle" class="ml-4 text-gray-900 rounded px-1 py-1">
@@ -108,7 +109,11 @@ import { getSupabase } from "./js/supabaseClient.js";
 (async () => {
   const supabase = await getSupabase();
   const { data: { user } } = await supabase.auth.getUser();
-  if(user){ document.getElementById("loginLink").textContent = "Logout"; document.getElementById("loginLink").onclick = async (e)=>{ e.preventDefault(); await supabase.auth.signOut(); location.reload(); }; }
+  if(user){
+    document.getElementById("loginLink").textContent = "Logout";
+    document.getElementById("loginLink").onclick = async (e)=>{ e.preventDefault(); await supabase.auth.signOut(); location.reload(); };
+    document.getElementById("dashboardLink").classList.remove("hidden");
+  }
 })();
 </script>
     <script type="module" src="js/main.js"></script>
