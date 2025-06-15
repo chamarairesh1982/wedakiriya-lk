@@ -36,8 +36,8 @@
     <script src="data/services.js"></script>
     <script src="js/translations.js"></script>
     <script type="module">
+    import { getSupabase } from "./js/supabaseClient.js";
     AOS.init();
-import { getSupabase } from "./js/supabaseClient.js";
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
     const container = document.getElementById('service-details');
