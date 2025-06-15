@@ -4,51 +4,53 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin | WedaKiriya.lk</title>
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/admin.css">
 </head>
-<body class="pt-12">
-<nav class="bg-blue-600 fixed w-full top-0 z-50">
-  <div class="container flex items-center justify-between text-white">
-    <a class="font-bold text-lg py-2" href="index.html">WedaKiriya.lk</a>
-    <button id="logoutBtn" class="hidden text-sm">Logout</button>
+<body>
+  <div id="login" class="login">
+    <h2>Admin Login</h2>
+    <form id="loginForm">
+      <input type="email" name="email" placeholder="Email" required />
+      <input type="password" name="password" placeholder="Password" required />
+      <button type="submit">Login</button>
+    </form>
   </div>
-</nav>
-<main class="container p-4">
-  <form id="loginForm" class="space-y-3">
-    <h1 class="text-xl font-bold">Admin Login</h1>
-    <input type="password" name="password" placeholder="Password" class="w-full p-2 border rounded">
-    <button class="bg-blue-600 text-white px-4 py-2 rounded" type="submit">Login</button>
-  </form>
-  <section id="adminSections" class="hidden">
-    <div class="mt-4">
-      <button id="fetchCities" class="bg-blue-600 text-white px-3 py-1 rounded">Import Sri Lankan Cities</button>
-      <ul id="cityList" class="mt-4"></ul>
+
+  <div id="adminPanel">
+    <div class="actions">
+      <button id="logoutBtn">Logout</button>
+      <button id="fetchCities">Fetch All Sri Lankan Cities</button>
+      <button id="saveCities" class="hide">Save Cities</button>
+      <button id="fetchCategories">Fetch Business Categories</button>
+      <button id="saveCategories" class="hide">Save Categories</button>
+      <button id="exportJson">Export JSON</button>
+      <button id="exportCsv">Export CSV</button>
+      <input type="file" id="importFile" accept=".json,.csv" />
     </div>
-    <div class="mt-4">
-      <button id="fetchCategories" class="bg-blue-600 text-white px-3 py-1 rounded">Import Categories</button>
-      <ul id="catList" class="mt-4"></ul>
-    </div>
-    <div id="dashboard" class="mt-4"></div>
-    <div id="businessManager" class="mt-4">
-      <h2 class="text-lg font-semibold mb-2">Manage Businesses</h2>
-      <form id="bizForm" class="space-y-2 mb-4">
-        <input type="hidden" name="index" value="">
-        <input type="text" name="name" placeholder="Name" class="w-full p-1 border rounded" required>
-        <input type="text" name="city" placeholder="City" class="w-full p-1 border rounded" required>
-        <input type="text" name="phone" placeholder="Phone" class="w-full p-1 border rounded" required>
-        <input type="text" name="category" placeholder="Category" class="w-full p-1 border rounded" required>
-        <textarea name="description" placeholder="Description" class="w-full p-1 border rounded"></textarea>
-        <label class="block"><input type="checkbox" name="featured"> Featured</label>
-        <button type="submit" class="bg-blue-600 text-white px-3 py-1 rounded">Save</button>
-        <button type="button" id="cancelEdit" class="hidden px-3 py-1 border rounded">Cancel</button>
-      </form>
-      <table class="min-w-full border text-sm">
-        <thead><tr class="bg-gray-200"><th class="border px-1">Name</th><th class="border px-1">City</th><th class="border px-1">Category</th><th class="border px-1">Actions</th></tr></thead>
-        <tbody id="bizTableBody"></tbody>
-      </table>
-    </div>
-  </section>
-</main>
-<script type="module" src="js/admin.js"></script>
+    <div id="preview" class="hide"></div>
+    <div class="dashboard" id="dashboard"></div>
+
+    <h3>Add / Edit Business</h3>
+    <form id="bizForm">
+      <input type="hidden" name="id" />
+      <input type="text" name="name" placeholder="Name" required />
+      <input type="text" name="owner" placeholder="Owner" />
+      <select name="category" id="catSelect" required></select>
+      <input type="text" name="contact" placeholder="Contact" />
+      <select name="city" id="citySelect" required></select>
+      <textarea name="description" placeholder="Description"></textarea>
+      <button type="submit">Save</button>
+      <button type="button" id="cancelEdit" class="hide">Cancel</button>
+    </form>
+
+    <table class="table" id="bizTable">
+      <thead>
+        <tr><th>Name</th><th>City</th><th>Category</th><th>Owner</th><th></th></tr>
+      </thead>
+      <tbody id="bizBody"></tbody>
+    </table>
+  </div>
+
+  <script type="module" src="js/admin.js"></script>
 </body>
 </html>

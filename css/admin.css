@@ -1,0 +1,56 @@
+/* Admin module styles */
+body {
+  font-family: 'Inter', sans-serif;
+  background: #f9fafb;
+  color: #111827;
+  padding: 20px;
+}
+.login {
+  max-width: 320px;
+  margin: 60px auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.login input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+button {
+  cursor: pointer;
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+}
+#adminPanel {
+  display: none;
+  max-width: 1000px;
+  margin: 20px auto;
+}
+.actions {
+  margin-bottom: 20px;
+}
+.actions button {
+  margin-right: 10px;
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+.table th, .table td {
+  border: 1px solid #ddd;
+  padding: 6px;
+  text-align: left;
+}
+.dashboard {
+  margin-top: 10px;
+  font-weight: 600;
+}
+.hide { display: none; }

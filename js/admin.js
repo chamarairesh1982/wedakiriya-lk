@@ -1,167 +1,217 @@
-const PASSWORD = 'wedakiriya';
+import { getSupabase } from './supabaseClient.js';
+let supabase;
+let cities = [];
+let categories = [];
+let editing = null;
+
 const loginForm = document.getElementById('loginForm');
-const sections = document.getElementById('adminSections');
-const logoutBtn = document.getElementById('logoutBtn');
+const loginBox = document.getElementById('login');
+const panel = document.getElementById('adminPanel');
 const dash = document.getElementById('dashboard');
-const bizTableBody = document.getElementById('bizTableBody');
-const bizForm = document.getElementById('bizForm');
+const preview = document.getElementById('preview');
+const citySel = document.getElementById('citySelect');
+const catSel = document.getElementById('catSelect');
+const bizBody = document.getElementById('bizBody');
 const cancelBtn = document.getElementById('cancelEdit');
 
-const defaultServices = window.servicesData || [];
-let services = [];
-
-function checkAuth() {
-  if (localStorage.getItem('adminAuth')) showAdmin();
+async function init() {
+  supabase = await getSupabase();
+  const { data: { session } } = await supabase.auth.getSession();
+  if (session) {
+    await checkAdmin();
+  }
 }
 
-loginForm.addEventListener('submit', e => {
+loginForm.addEventListener('submit', async (e) => {
   e.preventDefault();
-  if (e.target.password.value === PASSWORD) {
-    localStorage.setItem('adminAuth', 'true');
-    showAdmin();
-  } else {
-    alert('Invalid password');
-  }
+  const email = e.target.email.value;
+  const password = e.target.password.value;
+  const { error } = await (await getSupabase()).auth.signInWithPassword({ email, password });
+  if (error) return alert(error.message);
+  await checkAdmin();
 });
 
-logoutBtn.addEventListener('click', () => {
-  localStorage.removeItem('adminAuth');
+async function checkAdmin() {
+  const user = (await supabase.auth.getUser()).data.user;
+  const { data } = await supabase.from('admin_users').select('id').eq('user_id', user.id).single();
+  if (!data) { alert('Not an admin user'); await supabase.auth.signOut(); return; }
+  loginBox.style.display = 'none';
+  panel.style.display = 'block';
+  loadLists();
+  loadBusinesses();
+}
+
+document.getElementById('logoutBtn').addEventListener('click', async () => {
+  await supabase.auth.signOut();
   location.reload();
 });
 
-function loadServices() {
-  try {
-    const stored = JSON.parse(localStorage.getItem('services'));
-    services = Array.isArray(stored) ? stored : defaultServices.slice();
-  } catch {
-    services = defaultServices.slice();
+// Fetch Sri Lankan cities from Wikidata
+async function fetchCities() {
+  const query = `SELECT ?cityLabel WHERE { ?city wdt:P31/wdt:P279* wd:Q515; wdt:P17 wd:Q854. SERVICE wikibase:label { bd:serviceParam wikibase:language 'en'. } }`;
+  const url = 'https://query.wikidata.org/sparql?format=json&query=' + encodeURIComponent(query);
+  const res = await fetch(url);
+  const json = await res.json();
+  cities = json.results.bindings.map(b => b.cityLabel.value);
+  preview.innerHTML = '<h4>Cities</h4><ul>' + cities.map(c => `<li>${c}</li>`).join('') + '</ul>';
+  preview.classList.remove('hide');
+  document.getElementById('saveCities').classList.remove('hide');
+}
+
+async function saveCities() {
+  const rows = cities.map(name => ({ name }));
+  await supabase.from('cities').insert(rows).select();
+  preview.classList.add('hide');
+  document.getElementById('saveCities').classList.add('hide');
+  loadLists();
+}
+
+// Fetch categories from open dataset
+async function fetchCategories() {
+  const res = await fetch('https://raw.githubusercontent.com/dariusk/corpora/master/data/business/business_types.json');
+  const json = await res.json();
+  categories = json.business_types.slice(0, 30);
+  preview.innerHTML = '<h4>Categories</h4><ul>' + categories.map(c => `<li>${c}</li>`).join('') + '</ul>';
+  preview.classList.remove('hide');
+  document.getElementById('saveCategories').classList.remove('hide');
+}
+
+async function saveCategories() {
+  const rows = categories.map(name => ({ name }));
+  await supabase.from('categories').insert(rows).select();
+  preview.classList.add('hide');
+  document.getElementById('saveCategories').classList.add('hide');
+  loadLists();
+}
+
+async function loadLists() {
+  const { data: cityData } = await supabase.from('cities').select();
+  const { data: catData } = await supabase.from('categories').select();
+  citySel.innerHTML = cityData.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+  catSel.innerHTML = catData.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+  dash.textContent = `Total businesses: ${await count('businesses')} | categories: ${catData.length} | cities: ${cityData.length}`;
+}
+
+async function count(tbl) {
+  const { count } = await supabase.from(tbl).select('*', { count: 'exact', head: true });
+  return count || 0;
+}
+
+async function loadBusinesses() {
+  const { data } = await supabase.from('businesses').select('id,name,owner,contact,description,city_id,categories:id(category_id),category:category_id,cities:id(city_id)').order('created_at', { ascending: false });
+  bizBody.innerHTML = data.map(b => `<tr>
+    <td>${b.name}</td>
+    <td data-id="${b.city_id}">${getName(b.city_id, 'city')}</td>
+    <td data-id="${b.category_id}">${getName(b.category_id, 'cat')}</td>
+    <td>${b.owner || ''}</td>
+    <td><button data-id="${b.id}" class="edit">Edit</button> <button data-id="${b.id}" class="del">Delete</button></td>
+  </tr>`).join('');
+}
+
+function getName(id, type) {
+  const sel = type === 'city' ? citySel : catSel;
+  const opt = sel.querySelector(`option[value="${id}"]`);
+  return opt ? opt.textContent : '';
+}
+
+bizBody.addEventListener('click', async (e) => {
+  const id = e.target.dataset.id;
+  if (e.target.classList.contains('edit')) {
+    const { data } = await supabase.from('businesses').select('*').eq('id', id).single();
+    editing = id;
+    bizForm.id.value = id;
+    bizForm.name.value = data.name;
+    bizForm.owner.value = data.owner || '';
+    bizForm.category.value = data.category_id;
+    bizForm.contact.value = data.contact || '';
+    bizForm.city.value = data.city_id;
+    bizForm.description.value = data.description || '';
+    cancelBtn.classList.remove('hide');
+  } else if (e.target.classList.contains('del')) {
+    await supabase.from('businesses').delete().eq('id', id);
+    loadBusinesses();
+    loadLists();
+  }
+});
+
+bizForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const form = Object.fromEntries(new FormData(bizForm));
+  const payload = {
+    name: form.name,
+    owner: form.owner,
+    category_id: form.category,
+    contact: form.contact,
+    city_id: form.city,
+    description: form.description
+  };
+  if (editing) {
+    await supabase.from('businesses').update(payload).eq('id', editing);
+  } else {
+    await supabase.from('businesses').insert(payload);
+  }
+  bizForm.reset();
+  editing = null;
+  cancelBtn.classList.add('hide');
+  loadBusinesses();
+  loadLists();
+});
+
+cancelBtn.addEventListener('click', () => {
+  bizForm.reset();
+  editing = null;
+  cancelBtn.classList.add('hide');
+});
+
+// Export JSON/CSV
+async function exportData(type) {
+  const { data } = await supabase.from('businesses').select('*');
+  if (type === 'json') {
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    download(blob, 'businesses.json');
+  } else {
+    const csv = [Object.keys(data[0]).join(',')].concat(data.map(r => Object.values(r).join(','))).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    download(blob, 'businesses.csv');
   }
 }
 
-function saveServices() {
-  localStorage.setItem('services', JSON.stringify(services));
+function download(blob, name) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = name;
+  a.click();
+  URL.revokeObjectURL(url);
 }
 
-function renderDashboard() {
-  if (!dash) return;
-  const cities = new Set(services.map(s => s.city));
-  const cats = new Set(services.map(s => s.category));
-  dash.innerHTML = `
-    <p>Total listings: ${services.length}</p>
-    <p>Categories: ${cats.size}</p>
-    <p>Cities covered: ${cities.size}</p>
-  `;
+async function importData(file) {
+  const text = await file.text();
+  let rows;
+  if (file.type.includes('json')) {
+    rows = JSON.parse(text);
+  } else {
+    const [head, ...rest] = text.trim().split(/\r?\n/);
+    const cols = head.split(',');
+    rows = rest.map(r => Object.fromEntries(r.split(',').map((v,i) => [cols[i], v])));
+  }
+  await supabase.from('businesses').insert(rows);
+  loadBusinesses();
+  loadLists();
 }
 
-function renderTable() {
-  if (!bizTableBody) return;
-  bizTableBody.innerHTML = services
-    .map((s, i) => `
-      <tr>
-        <td class="border px-1">${s.name}</td>
-        <td class="border px-1">${s.city}</td>
-        <td class="border px-1">${s.category}</td>
-        <td class="border px-1 text-center">
-          <button data-index="${i}" class="editBtn text-blue-600">Edit</button>
-          <button data-index="${i}" class="delBtn text-red-600 ml-2">Delete</button>
-        </td>
-      </tr>`)
-    .join('');
-}
+// Event listeners
 
-function showAdmin() {
-  loginForm.classList.add('hidden');
-  sections.classList.remove('hidden');
-  logoutBtn.classList.remove('hidden');
-  loadServices();
-  const cities = JSON.parse(localStorage.getItem('cities') || '[]');
-  const cityList = document.getElementById('cityList');
-  if (cityList && cities.length) cityList.innerHTML = cities.map(c => `<li>${c}</li>`).join('');
-  const categories = JSON.parse(localStorage.getItem('categories') || '[]');
-  const catList = document.getElementById('catList');
-  if (catList && categories.length) catList.innerHTML = categories.map(c => `<li>${c}</li>`).join('');
-  renderTable();
-  renderDashboard();
-}
+document.getElementById('fetchCities').onclick = fetchCities;
+document.getElementById('saveCities').onclick = saveCities;
+document.getElementById('fetchCategories').onclick = fetchCategories;
+document.getElementById('saveCategories').onclick = saveCategories;
+document.getElementById('exportJson').onclick = () => exportData('json');
+document.getElementById('exportCsv').onclick = () => exportData('csv');
 
-async function fetchCities() {
-  const res = await fetch('https://countriesnow.space/api/v0.1/countries/cities/q?country=Sri%20Lanka');
-  const data = await res.json();
-  const list = document.getElementById('cityList');
-  localStorage.setItem('cities', JSON.stringify(data.data));
-  list.innerHTML = data.data.map(c => `<li>${c}</li>`).join('');
-  renderDashboard();
-}
+document.getElementById('importFile').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (file) importData(file);
+});
 
-async function fetchCategories() {
-  const res = await fetch('https://raw.githubusercontent.com/dariusk/corpora/master/data/humans/occupations.json');
-  const data = await res.json();
-  const categories = data.occupations.slice(0, 20);
-  localStorage.setItem('categories', JSON.stringify(categories));
-  const list = document.getElementById('catList');
-  list.innerHTML = categories.map(c => `<li>${c}</li>`).join('');
-  renderDashboard();
-}
-
-document.getElementById('fetchCities').addEventListener('click', fetchCities);
-document.getElementById('fetchCategories').addEventListener('click', fetchCategories);
-
-if (bizForm) {
-  bizForm.addEventListener('submit', e => {
-    e.preventDefault();
-    const form = e.target;
-    const idx = form.index.value;
-    const entry = {
-      id: form.name.value.toLowerCase().replace(/\s+/g, '-'),
-      name: form.name.value,
-      city: form.city.value,
-      phone: form.phone.value,
-      category: form.category.value,
-      description: form.description.value,
-      featured: form.featured.checked
-    };
-    if (idx === '') {
-      services.push(entry);
-    } else {
-      services[idx] = entry;
-    }
-    saveServices();
-    renderTable();
-    renderDashboard();
-    form.reset();
-    form.index.value = '';
-    cancelBtn.classList.add('hidden');
-  });
-}
-
-if (cancelBtn) {
-  cancelBtn.addEventListener('click', () => {
-    bizForm.reset();
-    bizForm.index.value = '';
-    cancelBtn.classList.add('hidden');
-  });
-}
-
-if (bizTableBody) {
-  bizTableBody.addEventListener('click', e => {
-    const idx = e.target.dataset.index;
-    if (e.target.classList.contains('editBtn')) {
-      const b = services[idx];
-      bizForm.name.value = b.name;
-      bizForm.city.value = b.city;
-      bizForm.phone.value = b.phone;
-      bizForm.category.value = b.category;
-      bizForm.description.value = b.description;
-      bizForm.featured.checked = b.featured;
-      bizForm.index.value = idx;
-      cancelBtn.classList.remove('hidden');
-    } else if (e.target.classList.contains('delBtn')) {
-      services.splice(idx, 1);
-      saveServices();
-      renderTable();
-      renderDashboard();
-    }
-  });
-}
-
-checkAuth();
+init();
