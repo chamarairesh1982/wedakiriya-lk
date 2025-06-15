@@ -36,6 +36,7 @@ nav a {
   text-decoration: none;
   font-weight: 600;
 }
+nav a.active, nav a[aria-current="page"] { background: rgba(255,255,255,0.15); border-radius:4px; padding:0.25rem 0.5rem; }
 nav select {
   border: none;
   padding: 4px 6px;
@@ -216,12 +217,15 @@ nav select {
 }
 
 /* Forms */
-input[type="text"], input[type="email"], textarea {
+input[type="text"], input[type="email"], input[type="password"], input[type="number"], textarea, select {
   border:1px solid #d1d5db;
   border-radius:0.5rem;
   padding:0.5rem 0.75rem;
+  font-size:1rem;
 }
 
+button { cursor:pointer; transition:background .2s ease, color .2s ease, transform .2s ease; }
+button:hover { transform:translateY(-2px); }
 /* Footer */
 footer {
   background: var(--primary);
