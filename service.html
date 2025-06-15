@@ -7,6 +7,9 @@
     <meta id="metaOgTitle" property="og:title" content="Service Details">
     <meta id="metaOgDesc" property="og:description" content="Local service information">
     <meta id="metaOgImg" property="og:image" content="images/hero.svg">
+    <meta id="metaOgUrl" property="og:url" content="">
+    <link id="canonicalLink" rel="canonical" href="">
+    <script id="jsonLd" type="application/ld+json"></script>
     <title>Service Details - WedaKiriya.lk</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
@@ -53,7 +56,19 @@ import { getSupabase } from "./js/supabaseClient.js";
         document.getElementById('metaDesc').setAttribute('content', `${s.name} in ${s.city}. Contact ${s.phone}`);
         document.getElementById('metaOgTitle').setAttribute('content', s.name);
         document.getElementById('metaOgDesc').setAttribute('content', s.description);
+        const url = `service.html?id=${s.id}`;
         document.getElementById('metaOgImg').setAttribute('content', 'images/hero.svg');
+        document.getElementById('metaOgUrl').setAttribute('content', url);
+        document.getElementById('canonicalLink').setAttribute('href', url);
+        document.getElementById('jsonLd').textContent = JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'LocalBusiness',
+          name: s.name,
+          telephone: s.phone,
+          address: { '@type': 'PostalAddress', addressLocality: s.city },
+          url: window.location.href,
+          description: s.description
+        });
         container.innerHTML = `
             <h1 class="mb-3" data-aos="fade-down">${s.name}</h1>
             <p class="text-muted" data-aos="fade-down">${s.city}</p>
