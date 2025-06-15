@@ -53,3 +53,9 @@ The repository now ships with small SVG icons, so it works offline without exter
 2. Enter the admin password (`wedakiriya` by default).
 3. Use the buttons to import Sri Lankan cities and default categories.
 4. The imported lists are displayed below each button.
+
+## New Features
+- User registration and login via `login.html` using Supabase Auth.
+- Users can favourite listings on the homepage. Favourites are stored in the `favorites` table.
+- Listings can be reported from the details page which inserts a row into the `reports` table.
+- Additional SQL script `sql/extended_schema.sql` creates tables for listings, images, favourites and reports.

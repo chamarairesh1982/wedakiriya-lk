@@ -1,3 +1,4 @@
+import { getSupabase } from "./supabaseClient.js";
 import { loadOffer } from "./offer.js";
 AOS.init({ once: true });
 const searchInput = document.getElementById('searchInput');
@@ -5,6 +6,8 @@ const categoryButtons = document.querySelectorAll('.category-btn');
 const container = document.getElementById('serviceContainer');
 const featuredContainer = document.getElementById('featuredContainer');
 const loadMoreTrigger = document.getElementById('loadMoreTrigger');
+let supabase;
+let userFavorites = [];
 const icons = { tailor: '✂️', electrician: '⚡', tutor: '📚', ac: '🛠' };
 const perPage = 8;
 let services = window.servicesData || [];
@@ -13,11 +16,20 @@ let currentPage = 1;
 let observer;
 
 renderFeatured();
+(async () => {
+  supabase = await getSupabase();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (user) {
+    const { data } = await supabase.from("favorites").select("listing_id").eq("user_id", user.id);
+    userFavorites = (data || []).map(r => r.listing_id);
+  }
+})();
 applyFilters();
 
 function createCard(s, featured = false) {
   return `<div class="col">
     <div class="card h-100 service-card shadow-sm rounded-3 ${featured ? 'featured-card' : ''}" data-name="${s.name.toLowerCase()}" data-city="${s.city.toLowerCase()}" data-category="${s.category}" data-id="${s.id}">
+        <div class="text-right pr-2 pt-2"><button class="fav-btn" data-id="${s.id}" aria-label="Save">${userFavorites.includes(s.id)?"&#9733;":"&#9734;"}</button></div>
       <div class="service-icon mb-2">${icons[s.category] || '🔧'}</div>
       <div class="card-body text-center">
         <h5 class="card-title">${s.name}</h5>
@@ -70,6 +82,7 @@ function renderNextPage(reset = false) {
 
 function setupObserver() {
   if (observer) observer.disconnect();
+  attachFavListeners();
   if (currentPage * perPage >= filtered.length) return;
   observer = new IntersectionObserver(entries => {
     if (entries[0].isIntersecting) {
@@ -90,6 +103,27 @@ function applyFilters() {
 }
 
 if (searchInput) searchInput.addEventListener('input', applyFilters);
+function attachFavListeners(){
+  document.querySelectorAll(".fav-btn").forEach(btn=>{
+    btn.onclick=async()=>{
+      if(!supabase) return;
+      const { data: { user } } = await supabase.auth.getUser();
+      if(!user){ alert("Please login first"); return; }
+      const id = btn.dataset.id;
+      const exists = userFavorites.includes(id);
+      if(exists){
+        await supabase.from("favorites").delete().eq("user_id", user.id).eq("listing_id", id);
+        userFavorites = userFavorites.filter(f=>f!==id);
+        btn.innerHTML="&#9734;";
+      }else{
+        await supabase.from("favorites").insert({ user_id:user.id, listing_id:id });
+        userFavorites.push(id);
+        btn.innerHTML="&#9733;";
+      }
+    };
+  });
+}
+
 categoryButtons.forEach(btn => {
   btn.addEventListener('click', () => {
     categoryButtons.forEach(b => b.classList.remove('active'));
