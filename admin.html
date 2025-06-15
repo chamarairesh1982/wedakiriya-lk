@@ -4,81 +4,227 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin | WedaKiriya.lk</title>
-  <link rel="stylesheet" href="css/admin.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#f8fafd;
+      --primary:#2563eb;
+      --card-bg:#ffffff;
+      --text:#111827;
+      --muted:#6b7280;
+    }
+    *{box-sizing:border-box;}
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);margin:0;padding-top:72px;}
+    nav{background:var(--primary);color:#fff;position:fixed;top:0;left:0;right:0;z-index:1000;}
+    nav .container{display:flex;align-items:center;justify-content:space-between;padding:0.5rem 1rem;}
+    .logo{color:#fff;text-decoration:none;font-weight:600;font-size:1.25rem;}
+    nav .nav-menu{display:flex;align-items:center;gap:1rem;}
+    nav .nav-menu a{color:#fff;text-decoration:none;font-weight:600;}
+    .nav-toggle{display:none;background:none;border:none;color:#fff;font-size:1.5rem;}
+    .user-info{display:flex;align-items:center;gap:0.5rem;margin-left:auto;}
+    .avatar{width:32px;height:32px;border-radius:50%;background:#e5e7eb;display:flex;align-items:center;justify-content:center;font-size:1rem;}
+    @media(max-width:768px){
+      .nav-toggle{display:block;}
+      nav .nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:var(--primary);flex-direction:column;padding:0.5rem 1rem;}
+      nav .nav-menu.show{display:flex;}
+    }
+    .container{width:90%;max-width:1200px;margin:0 auto;}
+    main{margin-top:1rem;}
+    section{background:var(--card-bg);padding:1rem;border-radius:0.5rem;box-shadow:0 1px 3px rgba(0,0,0,0.1);margin-bottom:1.5rem;}
+    h2,h3{margin-top:0;font-weight:600;}
+    .actions{display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1rem;}
+    form{display:grid;gap:1rem;margin-bottom:1rem;}
+    .field{position:relative;}
+    .field input,.field textarea,.field select{width:100%;border:1px solid #d1d5db;border-radius:0.5rem;padding:1rem 0.75rem 0.25rem;font-size:1rem;background:#fff;}
+    .field label{position:absolute;top:0.75rem;left:0.75rem;color:var(--muted);pointer-events:none;transition:all .2s ease;}
+    .field input:focus+label,.field textarea:focus+label,.field select:focus+label,.field input:not(:placeholder-shown)+label,.field textarea:not(:placeholder-shown)+label,.field select:not([value=""]):valid+label{transform:translateY(-0.6rem) scale(0.85);background:var(--card-bg);padding:0 0.25rem;}
+    .form-actions{display:flex;gap:0.5rem;}
+    button{cursor:pointer;border:none;border-radius:0.5rem;padding:0.6rem 1rem;font-size:1rem;}
+    .btn-primary{background:var(--primary);color:#fff;}
+    .btn-secondary{background:var(--muted);color:#fff;}
+    .btn-icon{background:none;color:var(--primary);font-size:1.2rem;}
+    table{width:100%;border-collapse:collapse;margin-bottom:1rem;}
+    thead th{background:var(--bg);position:sticky;top:72px;font-weight:600;padding:0.5rem;}
+    tbody td{padding:0.5rem;border-top:1px solid #e5e7eb;}
+    tbody tr:nth-child(even){background:#f1f5f9;}
+    tbody tr:hover{background:#e0e7ff;}
+    td.actions{white-space:nowrap;}
+    td.actions button{margin-right:0.25rem;}
+    .search-bar{margin-bottom:0.5rem;}
+    .search-bar input{width:100%;padding:0.5rem 0.75rem;border:1px solid #d1d5db;border-radius:0.5rem;}
+    .skeleton{display:block;height:1rem;margin-bottom:0.5rem;background:linear-gradient(-90deg,#f0f0f0 0%,#e0e0e0 50%,#f0f0f0 100%);background-size:200% 100%;animation:shimmer 1.2s infinite;border-radius:0.25rem;}
+    @keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+    .hide{display:none !important;}
+    .login{max-width:320px;margin:4rem auto;padding:1rem;background:var(--card-bg);border-radius:0.5rem;box-shadow:0 1px 3px rgba(0,0,0,0.1);}
+    .login input{width:100%;padding:0.75rem;margin-bottom:0.75rem;border:1px solid #d1d5db;border-radius:0.5rem;}
+    .login button{width:100%;}
+    @media(max-width:600px){th,td{font-size:0.875rem;}button{font-size:0.875rem;padding:0.5rem 0.75rem;}}
+  </style>
 </head>
 <body>
+  <nav>
+    <div class="container">
+      <a href="admin.html" class="logo">WedaKiriya.lk</a>
+      <button id="menuToggle" class="nav-toggle" aria-label="Toggle navigation">&#9776;</button>
+      <div id="navMenu" class="nav-menu">
+        <a href="admin-dashboard.html">Dashboard</a>
+        <a href="#businessSection">Businesses</a>
+        <a href="#categorySection">Categories</a>
+        <a href="#citySection">Cities</a>
+        <a href="#usersSection">Users</a>
+        <button id="logoutBtn" class="btn-secondary">Logout</button>
+      </div>
+      <div class="user-info">
+        <span id="adminName">Admin</span>
+        <span id="adminAvatar" class="avatar" aria-hidden="true">👤</span>
+      </div>
+    </div>
+  </nav>
+
   <div id="login" class="login">
     <h2>Admin Login</h2>
     <form id="loginForm">
-      <input type="email" name="email" placeholder="Email" required />
-      <input type="password" name="password" placeholder="Password" required />
-      <button type="submit">Login</button>
+      <div class="field">
+        <input type="email" id="email" name="email" placeholder=" " required />
+        <label for="email">Email</label>
+      </div>
+      <div class="field">
+        <input type="password" id="password" name="password" placeholder=" " required />
+        <label for="password">Password</label>
+      </div>
+      <button type="submit" class="btn-primary">Login</button>
     </form>
   </div>
 
-  <div id="adminPanel">
-    <div class="actions">
-      <button id="logoutBtn">Logout</button>
-      <button id="fetchCities">Fetch All Sri Lankan Cities</button>
-      <button id="saveCities" class="hide">Save Cities</button>
-      <button id="fetchCategories">Fetch Business Categories</button>
-      <button id="saveCategories" class="hide">Save Categories</button>
-      <button id="exportJson">Export JSON</button>
-      <button id="exportCsv">Export CSV</button>
-      <input type="file" id="importFile" accept=".json,.csv" />
-    </div>
-    <div id="preview" class="hide"></div>
-    <div class="dashboard" id="dashboard"></div>
+  <main id="adminPanel" class="container hide" aria-live="polite">
+    <div id="preview" class="hide" aria-live="polite"></div>
+    <div id="dashboard" class="actions"></div>
 
-    <h3>Add / Edit Business</h3>
-    <form id="bizForm">
-      <input type="hidden" name="id" />
-      <input type="text" name="name" placeholder="Name" required />
-      <input type="text" name="owner" placeholder="Owner" />
-      <select name="category" id="catSelect" required></select>
-      <input type="text" name="contact" placeholder="Contact" />
-      <select name="city" id="citySelect" required></select>
-      <textarea name="description" placeholder="Description"></textarea>
-      <button type="submit">Save</button>
-      <button type="button" id="cancelEdit" class="hide">Cancel</button>
-    </form>
+    <section id="businessSection">
+      <h3>Add / Edit Business</h3>
+      <form id="bizForm">
+        <input type="hidden" name="id" />
+        <div class="field">
+          <input type="text" name="name" id="bizName" placeholder=" " required />
+          <label for="bizName">Name</label>
+        </div>
+        <div class="field">
+          <input type="text" name="owner" id="bizOwner" placeholder=" " />
+          <label for="bizOwner">Owner</label>
+        </div>
+        <div class="field">
+          <select name="category" id="catSelect" required aria-label="Category"></select>
+          <label for="catSelect">Category</label>
+        </div>
+        <div class="field">
+          <input type="text" name="contact" id="bizContact" placeholder=" " />
+          <label for="bizContact">Contact</label>
+        </div>
+        <div class="field">
+          <select name="city" id="citySelect" required aria-label="City"></select>
+          <label for="citySelect">City</label>
+        </div>
+        <div class="field">
+          <textarea name="description" id="bizDesc" placeholder=" "></textarea>
+          <label for="bizDesc">Description</label>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn-primary">Save</button>
+          <button type="button" id="cancelEdit" class="btn-secondary hide">Cancel</button>
+        </div>
+      </form>
+      <div class="actions">
+        <button id="exportJson" class="btn-secondary">Export JSON</button>
+        <button id="exportCsv" class="btn-secondary">Export CSV</button>
+        <label class="btn-secondary">
+          <input type="file" id="importFile" accept=".json,.csv" aria-label="Import businesses" />
+          <span>Import</span>
+        </label>
+      </div>
+      <div class="search-bar">
+        <input type="search" id="searchBiz" placeholder="Search businesses" aria-label="Search businesses" />
+      </div>
+      <div id="bizSkeleton" class="hide"><div class="skeleton"></div><div class="skeleton"></div></div>
+      <table id="bizTable">
+        <thead>
+          <tr><th>Name</th><th>City</th><th>Category</th><th>Owner</th><th></th></tr>
+        </thead>
+        <tbody id="bizBody"></tbody>
+      </table>
+    </section>
 
-    <table class="table" id="bizTable">
-      <thead>
-        <tr><th>Name</th><th>City</th><th>Category</th><th>Owner</th><th></th></tr>
-      </thead>
-      <tbody id="bizBody"></tbody>
-    </table>
+    <section id="categorySection">
+      <h3>Manage Categories</h3>
+      <div class="actions">
+        <button id="fetchCategories" class="btn-secondary">Fetch Business Categories</button>
+        <button id="saveCategories" class="btn-primary hide">Save Categories</button>
+      </div>
+      <form id="categoryForm">
+        <input type="hidden" name="id" />
+        <div class="field">
+          <input type="text" name="name" id="catName" placeholder=" " required />
+          <label for="catName">Category name</label>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn-primary">Save</button>
+          <button type="button" id="cancelCategory" class="btn-secondary hide">Cancel</button>
+        </div>
+      </form>
+      <div class="search-bar">
+        <input type="search" id="searchCategories" placeholder="Search categories" aria-label="Search categories" />
+      </div>
+      <div id="categoriesSkeleton" class="hide"><div class="skeleton"></div><div class="skeleton"></div></div>
+      <table id="categoryTable">
+        <thead><tr><th>Name</th><th></th></tr></thead>
+        <tbody id="categoryBody"></tbody>
+      </table>
+    </section>
 
-    <h3>Manage Categories</h3>
-    <form id="categoryForm">
-      <input type="hidden" name="id" />
-      <input type="text" name="name" placeholder="Category name" required />
-      <button type="submit">Save</button>
-      <button type="button" id="cancelCategory" class="hide">Cancel</button>
-    </form>
-    <table class="table" id="categoryTable">
-      <thead>
-        <tr><th>Name</th><th></th></tr>
-      </thead>
-      <tbody id="categoryBody"></tbody>
-    </table>
+    <section id="citySection">
+      <h3>Manage Cities</h3>
+      <div class="actions">
+        <button id="fetchCities" class="btn-secondary">Fetch All Sri Lankan Cities</button>
+        <button id="saveCities" class="btn-primary hide">Save Cities</button>
+      </div>
+      <form id="cityForm">
+        <input type="hidden" name="id" />
+        <div class="field">
+          <input type="text" name="name" id="cityName" placeholder=" " required />
+          <label for="cityName">City name</label>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn-primary">Save</button>
+          <button type="button" id="cancelCity" class="btn-secondary hide">Cancel</button>
+        </div>
+      </form>
+      <div class="search-bar">
+        <input type="search" id="searchCities" placeholder="Search cities" aria-label="Search cities" />
+      </div>
+      <div id="citiesSkeleton" class="hide"><div class="skeleton"></div><div class="skeleton"></div></div>
+      <table id="cityTable">
+        <thead><tr><th>Name</th><th></th></tr></thead>
+        <tbody id="cityBody"></tbody>
+      </table>
+    </section>
 
-    <h3>Manage Cities</h3>
-    <form id="cityForm">
-      <input type="hidden" name="id" />
-      <input type="text" name="name" placeholder="City name" required />
-      <button type="submit">Save</button>
-      <button type="button" id="cancelCity" class="hide">Cancel</button>
-    </form>
-    <table class="table" id="cityTable">
-      <thead>
-        <tr><th>Name</th><th></th></tr>
-      </thead>
-      <tbody id="cityBody"></tbody>
-    </table>
-  </div>
+    <section id="usersSection">
+      <h3>Manage Users</h3>
+      <div class="search-bar">
+        <input type="search" id="searchUsers" placeholder="Search users" aria-label="Search users" />
+      </div>
+      <div id="usersSkeleton" class="hide"><div class="skeleton"></div><div class="skeleton"></div></div>
+      <table id="usersTable">
+        <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th></th></tr></thead>
+        <tbody id="usersBody"></tbody>
+      </table>
+    </section>
+  </main>
 
+  <script>
+    document.getElementById('menuToggle').addEventListener('click',()=>{
+      document.getElementById('navMenu').classList.toggle('show');
+    });
+  </script>
   <script type="module" src="js/admin.js"></script>
 </body>
 </html>
