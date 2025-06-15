@@ -7,6 +7,9 @@
     <meta id="metaOgTitle" property="og:title" content="Service Details">
     <meta id="metaOgDesc" property="og:description" content="Local service information">
     <meta id="metaOgImg" property="og:image" content="images/hero.svg">
+    <meta id="metaOgUrl" property="og:url" content="">
+    <link id="canonicalLink" rel="canonical" href="">
+    <script id="jsonLd" type="application/ld+json"></script>
     <title>Service Details - WedaKiriya.lk</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
@@ -42,19 +45,37 @@ import { getSupabase } from "./js/supabaseClient.js";
     const id = params.get('id');
     const container = document.getElementById('service-details');
     const list = window.servicesData || [];
-    const s = list.find(item => item.id === id);
+    let s = list.find(item => item.id === id);
+    if (!s) {
+        const supabase = await getSupabase();
+        const { data } = await supabase.from('listings').select('*').eq('id', id).single();
+        s = data;
+    }
     if (s) {
         document.title = `${s.name} - WedaKiriya.lk`;
         document.getElementById('metaDesc').setAttribute('content', `${s.name} in ${s.city}. Contact ${s.phone}`);
         document.getElementById('metaOgTitle').setAttribute('content', s.name);
         document.getElementById('metaOgDesc').setAttribute('content', s.description);
+        const url = `service.html?id=${s.id}`;
         document.getElementById('metaOgImg').setAttribute('content', 'images/hero.svg');
+        document.getElementById('metaOgUrl').setAttribute('content', url);
+        document.getElementById('canonicalLink').setAttribute('href', url);
+        document.getElementById('jsonLd').textContent = JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'LocalBusiness',
+          name: s.name,
+          telephone: s.phone,
+          address: { '@type': 'PostalAddress', addressLocality: s.city },
+          url: window.location.href,
+          description: s.description
+        });
         container.innerHTML = `
             <h1 class="mb-3" data-aos="fade-down">${s.name}</h1>
             <p class="text-muted" data-aos="fade-down">${s.city}</p>
             <a href="https://wa.me/94${s.phone.substring(1)}" target="_blank" class="btn btn-success mb-2" data-aos="fade-up">${t('whatsapp_now')}</a>
             <a href="tel:${s.phone}" class="d-block mb-3" data-aos="fade-up">${s.phone}</a>
             <p data-aos="fade-up">${s.description}</p>
+            <div id="gallery" class="gallery" data-aos="fade-up"></div>
             <div class="flex gap-2 my-2" data-aos="fade-up">
               <a aria-label="Share on WhatsApp" class="bg-green-500 text-white px-2 py-1 rounded" target="_blank" id="waShare">WhatsApp</a>
               <a aria-label="Share on Facebook" class="bg-blue-600 text-white px-2 py-1 rounded" target="_blank" id="fbShare">Facebook</a>
@@ -80,6 +101,16 @@ import { getSupabase } from "./js/supabaseClient.js";
         document.getElementById('waShare').href = `https://wa.me/?text=${encodeURIComponent(s.name + ' - ' + shareUrl)}`;
         document.getElementById('fbShare').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
         const supabase = await getSupabase();
+        const { data: imgs } = await supabase.from('listing_images').select('image_url').eq('listing_id', id);
+        if(imgs && imgs.length){
+          const gal = document.getElementById('gallery');
+          imgs.forEach(i=>{
+            const imgEl = document.createElement('img');
+            imgEl.src = i.image_url;
+            imgEl.className = 'gallery-img';
+            gal.appendChild(imgEl);
+          });
+        }
         document.getElementById('reportBtn').onclick = async () => {
           const { data: { user } } = await supabase.auth.getUser();
           if(!user){ alert('Login first'); return; }

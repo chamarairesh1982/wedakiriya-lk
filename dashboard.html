@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | WedaKiriya.lk</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="data/services.js"></script>
+  <script type="module" src="js/dashboard.js"></script>
+</head>
+<body>
+<nav class="bg-blue-600 fixed w-full top-0 z-50">
+  <div class="container flex items-center justify-between text-white">
+    <a class="font-bold text-lg py-2" href="index.html">WedaKiriya.lk</a>
+  </div>
+</nav>
+<main class="container py-5">
+  <h1 class="text-xl mb-4">User Dashboard</h1>
+  <p class="mb-3">Logged in as <span id="userEmail"></span></p>
+  <button id="logoutBtn" class="bg-blue-600 text-white px-3 py-1 rounded mb-4">Logout</button>
+  <h2 class="text-lg mb-2">Favorites</h2>
+  <ul id="favoritesList" class="space-y-2"></ul>
+</main>
+</body>
+</html>

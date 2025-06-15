@@ -28,6 +28,7 @@ body {
 nav {
   background: var(--primary);
   color: #fff;
+  position: relative;
 }
 nav a {
   margin-left: 1rem;
@@ -39,6 +40,31 @@ nav select {
   border: none;
   padding: 4px 6px;
   border-radius: 4px;
+}
+
+#navToggle {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #fff;
+}
+
+@media (min-width: 768px) {
+  #navToggle { display: none; }
+  #navMenu { display: flex !important; }
+}
+
+@media (max-width: 767px) {
+  #navMenu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--primary);
+    flex-direction: column;
+    padding: 0.5rem 1rem;
+  }
+  #navMenu a { margin: 0.5rem 0; }
 }
 
 .container {
@@ -263,3 +289,16 @@ footer {
 .fw-bold { font-weight:700; }
 .form-label { display:block; font-weight:600; margin-bottom:0.25rem; }
 .border-top { border-top:1px solid #d1d5db; }
+
+/* Gallery */
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+.gallery-img {
+  width: 100%;
+  max-width: 150px;
+  border-radius: 0.5rem;
+}
