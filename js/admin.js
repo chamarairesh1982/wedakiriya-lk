@@ -65,7 +65,8 @@ async function checkAdmin() {
   loadBusinesses();
 }
 
-document.getElementById('logoutBtn').addEventListener('click', async () => {
+document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+  e.preventDefault();
   await supabase.auth.signOut();
   location.reload();
 });
