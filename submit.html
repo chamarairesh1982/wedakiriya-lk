@@ -60,6 +60,10 @@
       <label for="description" class="form-label" data-i18n="submit_description">Description</label>
       <textarea id="description" rows="4" required class="w-full p-2 border rounded" data-i18n-placeholder="submit_description"></textarea>
     </div>
+    <div class="mb-3">
+      <label for="images" class="form-label">Images</label>
+      <input type="file" id="images" accept="image/*" multiple class="w-full p-2 border rounded">
+    </div>
     <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded" data-i18n="submit_button">Submit</button>
     <div id="status" class="mt-2"></div>
   </form>
@@ -89,6 +93,35 @@ document.getElementById('navToggle').addEventListener('click', () => document.ge
     const cfg = await cfgRes.json();
     const SUPABASE_URL = cfg.SUPABASE_URL;
     const SUPABASE_ANON_KEY = cfg.SUPABASE_ANON_KEY;
+
+    async function uploadImages(listingId){
+      const files = document.getElementById('images').files;
+      for(const file of files){
+        const path = `${listingId}/${Date.now()}-${file.name}`;
+        const uploadRes = await fetch(`${SUPABASE_URL}/storage/v1/object/listing-images/${path}`, {
+          method:'POST',
+          headers:{
+            apikey: SUPABASE_ANON_KEY,
+            Authorization:`Bearer ${SUPABASE_ANON_KEY}`,
+            'Content-Type': file.type
+          },
+          body: file
+        });
+        if(uploadRes.ok){
+          const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/listing-images/${path}`;
+          await fetch(`${SUPABASE_URL}/rest/v1/listing_images`, {
+            method:'POST',
+            headers:{
+              'Content-Type':'application/json',
+              apikey: SUPABASE_ANON_KEY,
+              Authorization:`Bearer ${SUPABASE_ANON_KEY}`,
+              Prefer:'return=minimal'
+            },
+            body: JSON.stringify({ listing_id: listingId, image_url: publicUrl })
+          });
+        }
+      }
+    }
     document.getElementById('bizForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const data = {
@@ -102,17 +135,19 @@ document.getElementById('navToggle').addEventListener('click', () => document.ge
       statusEl.textContent = t('submitting');
       statusEl.style.color = 'black';
       try {
-        const res = await fetch(`${SUPABASE_URL}/rest/v1/businesses`, {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/listings`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             apikey: SUPABASE_ANON_KEY,
             Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
-            Prefer: 'return=minimal',
+            Prefer: 'return=representation',
           },
           body: JSON.stringify(data),
         });
         if (res.ok) {
+          const [created] = await res.json();
+          await uploadImages(created.id);
           statusEl.textContent = t('submit_success');
           statusEl.style.color = 'green';
           e.target.reset();

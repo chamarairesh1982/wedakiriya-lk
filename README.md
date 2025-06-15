@@ -9,6 +9,7 @@ You can view the live site at [https://chamarairesh1982.github.io/wedakiriya-lk/
 - `css/styles.css` – custom styling
 - `images/` – contains local SVG icons for the hero section and service cards
 - `data/services.js` – small JS array of service listings used by the homepage
+- `dashboard.html` – user dashboard showing favourites
 
 To preview locally, simply open `index.html` in a browser. No build step or server is required.
 
@@ -59,4 +60,7 @@ The repository now ships with small SVG icons, so it works offline without exter
 - Users can favourite listings on the homepage. Favourites are stored in the `favorites` table.
 - Listings can be reported from the details page which inserts a row into the `reports` table.
 - Additional SQL script `sql/extended_schema.sql` creates tables for listings, images, favourites and reports.
+
 - Sinhala/English language switcher with localStorage and URL parameter persistence.
+- `dashboard.html` shows a simple user dashboard where logged in users can view and remove their favourites and logout.
+

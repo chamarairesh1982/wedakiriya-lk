@@ -5,6 +5,11 @@ const signupForm = document.getElementById('signupForm');
 
 (async () => {
   const supabase = await getSupabase();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (user) {
+    location.href = 'dashboard.html';
+    return;
+  }
   loginForm.addEventListener('submit', async e => {
     e.preventDefault();
     status.textContent = 'Logging in...';
@@ -13,7 +18,7 @@ const signupForm = document.getElementById('signupForm');
       password: document.getElementById('password').value
     });
     status.textContent = error ? error.message : 'Logged in!';
-    if (!error) setTimeout(() => location.href = 'index.html', 800);
+    if (!error) setTimeout(() => location.href = 'dashboard.html', 800);
   });
 
   signupForm.addEventListener('submit', async e => {
