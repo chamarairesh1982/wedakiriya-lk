@@ -164,7 +164,10 @@ async function count(tbl) {
 }
 
 async function loadBusinesses() {
-  const { data } = await supabase.from('businesses').select('id,name,owner,contact,description,city_id,categories:id(category_id),category:category_id,cities:id(city_id)').order('created_at', { ascending: false });
+  const { data } = await supabase
+    .from('businesses')
+    .select('id,name,owner,contact,description,city_id,category_id')
+    .order('created_at', { ascending: false });
   bizBody.innerHTML = data.map(b => `<tr>
     <td>${b.name}</td>
     <td data-id="${b.city_id}">${getName(b.city_id, 'city')}</td>
