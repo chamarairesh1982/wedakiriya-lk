@@ -94,34 +94,6 @@ AOS.init();
     const SUPABASE_URL = cfg.SUPABASE_URL;
     const SUPABASE_ANON_KEY = cfg.SUPABASE_ANON_KEY;
 
-    async function uploadImages(listingId){
-      const files = document.getElementById('images').files;
-      for(const file of files){
-        const path = `${listingId}/${Date.now()}-${file.name}`;
-        const uploadRes = await fetch(`${SUPABASE_URL}/storage/v1/object/listing-images/${path}`, {
-          method:'POST',
-          headers:{
-            apikey: SUPABASE_ANON_KEY,
-            Authorization:`Bearer ${SUPABASE_ANON_KEY}`,
-            'Content-Type': file.type
-          },
-          body: file
-        });
-        if(uploadRes.ok){
-          const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/listing-images/${path}`;
-          await fetch(`${SUPABASE_URL}/rest/v1/listing_images`, {
-            method:'POST',
-            headers:{
-              'Content-Type':'application/json',
-              apikey: SUPABASE_ANON_KEY,
-              Authorization:`Bearer ${SUPABASE_ANON_KEY}`,
-              Prefer:'return=minimal'
-            },
-            body: JSON.stringify({ listing_id: listingId, image_url: publicUrl })
-          });
-        }
-      }
-    }
     document.getElementById('bizForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const data = {
@@ -135,19 +107,17 @@ AOS.init();
       statusEl.textContent = t('submitting');
       statusEl.style.color = 'black';
       try {
-        const res = await fetch(`${SUPABASE_URL}/rest/v1/listings`, {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/businesses`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             apikey: SUPABASE_ANON_KEY,
             Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
-            Prefer: 'return=representation',
+            Prefer: 'return=minimal',
           },
           body: JSON.stringify(data),
         });
         if (res.ok) {
-          const [created] = await res.json();
-          await uploadImages(created.id);
           statusEl.textContent = t('submit_success');
           statusEl.style.color = 'green';
           e.target.reset();
