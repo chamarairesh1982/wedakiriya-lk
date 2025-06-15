@@ -35,11 +35,24 @@
       <button class="bg-blue-600 text-white px-4 rounded" type="submit">Add</button>
     </form>
     <ul id="cityAdminList" class="space-y-1"></ul>
+    <h2 class="text-xl font-bold mt-6 mb-2">Categories</h2>
+    <form id="newCategoryForm" class="flex gap-2 mb-4">
+      <input name="name" placeholder="Category name" class="p-2 border rounded flex-grow">
+      <input name="icon" placeholder="Icon (emoji)" class="p-2 border rounded w-28">
+      <button class="bg-blue-600 text-white px-4 rounded" type="submit">Add</button>
+    </form>
+    <ul id="categoryAdminList" class="space-y-1"></ul>
     <h2 class="text-xl font-bold mt-6 mb-2">Listings</h2>
-    <form id="newListingForm" class="flex gap-2 mb-4">
+    <form id="newListingForm" class="grid md:grid-cols-2 gap-2 mb-4">
       <input name="name" placeholder="Name" class="p-2 border rounded">
       <input name="city" placeholder="City" class="p-2 border rounded">
-      <button class="bg-blue-600 text-white px-4 rounded" type="submit">Add</button>
+      <input name="phone" placeholder="Phone" class="p-2 border rounded">
+      <input name="category" placeholder="Category" class="p-2 border rounded">
+      <textarea name="description" placeholder="Description" class="p-2 border rounded md:col-span-2"></textarea>
+      <label class="inline-flex items-center gap-2 md:col-span-2">
+        <input type="checkbox" name="featured"> Featured
+      </label>
+      <button class="bg-blue-600 text-white px-4 py-2 rounded md:col-span-2" type="submit">Save</button>
     </form>
     <ul id="listingList" class="space-y-1"></ul>
   </section>

@@ -29,3 +29,26 @@ The repository now ships with small SVG icons, so it works offline without exter
    }
    ```
 3. `submit.html` loads this file with `fetch('config.json')` to initialize the form submission request.
+
+## Supabase Setup
+1. Create a new [Supabase](https://supabase.com/) project.
+2. Open the **SQL Editor** and run the commands in [`sql/schema.sql`](sql/schema.sql) to create the required tables.
+3. From the project **Settings → API** page copy the `anon` key and project URL.
+4. Create a `config.json` file in the repository root with these values:
+   ```json
+   {
+     "SUPABASE_URL": "https://your-project.supabase.co",
+     "SUPABASE_ANON_KEY": "your-anon-key"
+   }
+   ```
+5. Sign up at least one user using `admin.html` and mark that user as an admin by ensuring the `is_admin` column in the `users` table is `true`.
+
+## Deploying to GitHub Pages
+1. Push the repository to your GitHub account.
+2. Enable **GitHub Pages** for the `main` branch.
+3. The site will be available at `https://<username>.github.io/wedakiriya-lk/`.
+
+## Using the Admin Panel
+1. Navigate to `admin.html` on your deployed site.
+2. Log in with an admin account. Only users flagged as admins in the `users` table can access the panel.
+3. From the panel you can manage offers, cities, categories and business listings. Changes are reflected instantly via Supabase.
