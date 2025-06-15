@@ -12,6 +12,56 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
     <link rel="stylesheet" href="css/styles.css">
+    <style>
+      .stats {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1.5rem;
+        margin-bottom: 1rem;
+      }
+      .stat-card {
+        background: #fff;
+        border-radius: 1rem;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        padding: 1.25rem;
+        width: 180px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+      .stat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      }
+      .stat-icon {
+        font-size: 1.75rem;
+        margin-bottom: 0.5rem;
+      }
+      .stat-number {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: var(--primary, #2563eb);
+        margin-bottom: 0.25rem;
+      }
+      .stat-label {
+        color: #6b7280;
+        font-size: 0.9rem;
+      }
+      @media (max-width: 600px) {
+        .stats {
+          flex-direction: column;
+          align-items: center;
+        }
+        .stat-card {
+          width: 100%;
+          max-width: 300px;
+        }
+      }
+    </style>
 </head>
 <body>
 <nav class="bg-blue-600 fixed w-full top-0 z-50">
@@ -48,23 +98,20 @@
         </section>
 <section class="services py-5 bg-light mb-5">
             <div class="container">
-                <div class="grid grid-cols-1 md:grid-cols-3 text-center gap-3 mb-4" id="summaryRow">
-                    <div class="">
-                        <div class="border rounded p-3 bg-white h-100">
-                            <h5 class="mb-0">120+</h5>
-                            <small class="text-muted" data-i18n="total_services">Total Services</small>
-                        </div>
+                <div class="stats" id="summaryRow">
+                    <div class="stat-card">
+                        <div class="stat-icon">🔧</div>
+                        <div class="stat-number">120+</div>
+                        <div class="stat-label" data-i18n="total_services">Total Services</div>
                     </div>
-                    <div class="">
-                        <div class="border rounded p-3 bg-white h-100">
-                            <h5 class="mb-0">30+</h5>
-                            <small class="text-muted" data-i18n="covered_cities">Covered Cities</small>
-                        </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🏙️</div>
+                        <div class="stat-number">30+</div>
+                        <div class="stat-label" data-i18n="covered_cities">Covered Cities</div>
                     </div>
-                    <div class="">
-                        <div class="border rounded p-3 bg-white h-100">
-                            <h5 class="mb-0" data-i18n="updated_weekly">Updated Weekly</h5>
-                        </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📅</div>
+                        <div class="stat-number" data-i18n="updated_weekly">Updated Weekly</div>
                     </div>
                 </div>
                 <div class="text-end mb-4">
