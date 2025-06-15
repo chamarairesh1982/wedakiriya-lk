@@ -15,6 +15,9 @@ window.translations = {
     filter_ac: "AC Repair",
     filter_all: "All",
     search_placeholder: "Search by service or city...",
+    cities_heading: "Cities",
+    cities_search: "Search city",
+    cities_load_error: "Failed to load cities",
     no_results: "No services match your search. Try another city or category.",
     about_heading: "About WedaKiriya.lk",
     about_p1: "WedaKiriya.lk is a community project connecting Sri Lankans with trusted local professionals and small businesses.",
@@ -37,7 +40,20 @@ window.translations = {
     view_details: "View Details",
     send: "Send",
     loading: "Loading...",
-    not_found: "Service not found."
+    not_found: "Service not found.",
+    submit_heading: "Submit Your Business",
+    submit_name: "Business Name",
+    submit_owner: "Owner Name",
+    submit_category: "Category",
+    submit_contact: "Contact Info",
+    submit_location: "Location",
+    submit_description: "Description",
+    submit_button: "Submit",
+    submitting: "Submitting...",
+    submit_success: "Submitted successfully!",
+    network_error: "Network error:",
+    config_error: "Error loading config:",
+    error_prefix: "Error:"
   },
   si: {
     nav_home: "මුල් පිටුව",
@@ -55,6 +71,9 @@ window.translations = {
     filter_ac: "ඒසී අලුත්වැඩියා",
     filter_all: "සියල්ල",
     search_placeholder: "සේවාව හෝ නගරය සොයන්න...",
+    cities_heading: "නගර",
+    cities_search: "නගරය සොයන්න",
+    cities_load_error: "නගර ලබාගැනීමට නොහැකි විය",
     no_results: "ඔබගේ සෙවුමට ගැලපෙන සේවාවක් නැත. වෙනත් නගරයක් හෝ ප්‍රවර්ගයක් උත්සාහ කරන්න.",
     about_heading: "WedaKiriya.lk ගැන",
     about_p1: "WedaKiriya.lk යනු ශ්‍රී ලාංකීය වෘත්තීයශීලීන් හා කුඩා ව්‍යාපාර සම්බන්ධ කිරීම සඳහා වූ ප්‍රජා ව්‍යාපෘතියකි.",
@@ -77,7 +96,20 @@ window.translations = {
     view_details: "වැඩි විස්තර",
     send: "යවන්න",
     loading: "පූරණය වෙමින්...",
-    not_found: "සේවාව හමු නොවීය."
+    not_found: "සේවාව හමු නොවීය.",
+    submit_heading: "ඔබගේ ව්‍යාපාරය යවන්න",
+    submit_name: "ව්‍යාපාරයේ නම",
+    submit_owner: "හිමිකරුගේ නම",
+    submit_category: "ව්‍යාපාර වර්ගය",
+    submit_contact: "දුරකථන හෝ විද්‍යුත් ලිපිනය",
+    submit_location: "නගරය",
+    submit_description: "විස්තරය",
+    submit_button: "යවන්න",
+    submitting: "යවමින්...",
+    submit_success: "සාර්ථකව යවා ඇත!",
+    network_error: "ජාල ගැටලුව:",
+    config_error: "වින්‍යාසය පූරණය කිරීමේ දෝෂය:",
+    error_prefix: "දෝෂය:"
   }
 };
 
