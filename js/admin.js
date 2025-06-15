@@ -43,8 +43,23 @@ loginForm.addEventListener('submit', async (e) => {
 
 async function checkAdmin() {
   const user = (await supabase.auth.getUser()).data.user;
-  const { data } = await supabase.from('admin_users').select('id').eq('user_id', user.id).single();
-  if (!data) { alert('Not an admin user'); await supabase.auth.signOut(); return; }
+  const { data, error } = await supabase
+    .from('admin_users')
+    .select('id')
+    .eq('user_id', user.id)
+    .single();
+  if (error) {
+    alert(
+      `${error.message}\nCheck that the admin_users table exists and that your account is listed as an admin.`
+    );
+    await supabase.auth.signOut();
+    return;
+  }
+  if (!data) {
+    alert('Not an admin user');
+    await supabase.auth.signOut();
+    return;
+  }
   loginBox.style.display = 'none';
   panel.style.display = 'block';
   loadLists();
