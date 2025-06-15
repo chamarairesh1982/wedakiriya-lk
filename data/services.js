@@ -7,7 +7,7 @@ window.servicesData = [
     category: "tailor",
     description: "Professional tailoring services.",
     featured: true
-  },,,,
+  },
   {
     id: "xyz-electricians",
     name: "XYZ Electricians",
@@ -108,3 +108,10 @@ window.servicesData = [
     featured: false
   }
 ];
+
+try {
+  const stored = JSON.parse(localStorage.getItem('services'));
+  if (Array.isArray(stored)) {
+    window.servicesData = stored;
+  }
+} catch {}

@@ -28,6 +28,25 @@
       <button id="fetchCategories" class="bg-blue-600 text-white px-3 py-1 rounded">Import Categories</button>
       <ul id="catList" class="mt-4"></ul>
     </div>
+    <div id="dashboard" class="mt-4"></div>
+    <div id="businessManager" class="mt-4">
+      <h2 class="text-lg font-semibold mb-2">Manage Businesses</h2>
+      <form id="bizForm" class="space-y-2 mb-4">
+        <input type="hidden" name="index" value="">
+        <input type="text" name="name" placeholder="Name" class="w-full p-1 border rounded" required>
+        <input type="text" name="city" placeholder="City" class="w-full p-1 border rounded" required>
+        <input type="text" name="phone" placeholder="Phone" class="w-full p-1 border rounded" required>
+        <input type="text" name="category" placeholder="Category" class="w-full p-1 border rounded" required>
+        <textarea name="description" placeholder="Description" class="w-full p-1 border rounded"></textarea>
+        <label class="block"><input type="checkbox" name="featured"> Featured</label>
+        <button type="submit" class="bg-blue-600 text-white px-3 py-1 rounded">Save</button>
+        <button type="button" id="cancelEdit" class="hidden px-3 py-1 border rounded">Cancel</button>
+      </form>
+      <table class="min-w-full border text-sm">
+        <thead><tr class="bg-gray-200"><th class="border px-1">Name</th><th class="border px-1">City</th><th class="border px-1">Category</th><th class="border px-1">Actions</th></tr></thead>
+        <tbody id="bizTableBody"></tbody>
+      </table>
+    </div>
   </section>
 </main>
 <script type="module" src="js/admin.js"></script>
