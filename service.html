@@ -42,19 +42,34 @@ import { getSupabase } from "./js/supabaseClient.js";
     const id = params.get('id');
     const container = document.getElementById('service-details');
     const list = window.servicesData || [];
-    const s = list.find(item => item.id === id);
+    let s = list.find(item => item.id === id);
+    const supabase = await getSupabase();
+    let images = [];
+    if (!s) {
+        const { data, error } = await supabase.from('listings').select('*').eq('id', id).single();
+        if (data) {
+            s = { name: data.title_en, city: data.location || '', phone: '', description: data.description_en };
+        }
+    }
     if (s) {
+        const { data: imgs } = await supabase.from('listing_images').select('image_url').eq('listing_id', id);
+        images = imgs || [];
         document.title = `${s.name} - WedaKiriya.lk`;
         document.getElementById('metaDesc').setAttribute('content', `${s.name} in ${s.city}. Contact ${s.phone}`);
         document.getElementById('metaOgTitle').setAttribute('content', s.name);
         document.getElementById('metaOgDesc').setAttribute('content', s.description);
         document.getElementById('metaOgImg').setAttribute('content', 'images/hero.svg');
+        const gallery = images.map(img => {
+            const url = supabase.storage.from('listing-images').getPublicUrl(img.image_url).publicUrl;
+            return `<img src="${url}" alt="${s.name}">`;
+        }).join('');
         container.innerHTML = `
             <h1 class="mb-3" data-aos="fade-down">${s.name}</h1>
             <p class="text-muted" data-aos="fade-down">${s.city}</p>
             <a href="https://wa.me/94${s.phone.substring(1)}" target="_blank" class="btn btn-success mb-2" data-aos="fade-up">${t('whatsapp_now')}</a>
             <a href="tel:${s.phone}" class="d-block mb-3" data-aos="fade-up">${s.phone}</a>
             <p data-aos="fade-up">${s.description}</p>
+            ${gallery ? `<div class="gallery" data-aos="fade-up">${gallery}</div>` : ''}
             <div class="flex gap-2 my-2" data-aos="fade-up">
               <a aria-label="Share on WhatsApp" class="bg-green-500 text-white px-2 py-1 rounded" target="_blank" id="waShare">WhatsApp</a>
               <a aria-label="Share on Facebook" class="bg-blue-600 text-white px-2 py-1 rounded" target="_blank" id="fbShare">Facebook</a>
@@ -70,7 +85,6 @@ import { getSupabase } from "./js/supabaseClient.js";
         const shareUrl = location.href;
         document.getElementById('waShare').href = `https://wa.me/?text=${encodeURIComponent(s.name + ' - ' + shareUrl)}`;
         document.getElementById('fbShare').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
-        const supabase = await getSupabase();
         document.getElementById('reportBtn').onclick = async () => {
           const { data: { user } } = await supabase.auth.getUser();
           if(!user){ alert('Login first'); return; }

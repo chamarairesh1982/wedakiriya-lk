@@ -263,3 +263,16 @@ footer {
 .fw-bold { font-weight:700; }
 .form-label { display:block; font-weight:600; margin-bottom:0.25rem; }
 .border-top { border-top:1px solid #d1d5db; }
+
+/* Listing gallery */
+.gallery {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+.gallery img {
+  height: 160px;
+  border-radius: 0.5rem;
+  object-fit: cover;
+}

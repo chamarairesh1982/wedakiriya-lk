@@ -59,3 +59,4 @@ The repository now ships with small SVG icons, so it works offline without exter
 - Users can favourite listings on the homepage. Favourites are stored in the `favorites` table.
 - Listings can be reported from the details page which inserts a row into the `reports` table.
 - Additional SQL script `sql/extended_schema.sql` creates tables for listings, images, favourites and reports.
+- Listings now support image uploads stored in Supabase Storage with a gallery displayed on each details page.
