@@ -4,81 +4,199 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin | WedaKiriya.lk</title>
-  <link rel="stylesheet" href="css/admin.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#f8fafd;
+      --primary:#2563eb;
+      --text:#111827;
+      --muted:#6b7280;
+    }
+    *{box-sizing:border-box;}
+    body{
+      font-family:'Inter',sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      margin:0;
+      padding-top:64px;
+    }
+    .navbar{position:sticky;top:0;background:var(--primary);color:#fff;z-index:100;}
+    .navbar .container{display:flex;align-items:center;justify-content:space-between;padding:0.5rem 1rem;flex-wrap:wrap;}
+    .navbar a{color:#fff;text-decoration:none;margin-right:1rem;font-weight:600;}
+    .navbar .nav-links{display:flex;align-items:center;flex-wrap:wrap;}
+    .navbar .user{display:flex;align-items:center;margin-left:auto;}
+    .navbar img{width:32px;height:32px;border-radius:50%;margin-left:0.5rem;}
+    .container{width:90%;max-width:1200px;margin:0 auto;}
+    section{margin-bottom:2rem;}
+    .card{background:#fff;border-radius:0.5rem;padding:1rem;box-shadow:0 1px 3px rgba(0,0,0,0.1);}
+    .card h2{margin-top:0;margin-bottom:0.75rem;}
+    form{display:grid;gap:0.75rem;margin-bottom:1rem;}
+    .form-group{position:relative;}
+    .form-group input,.form-group select,.form-group textarea{width:100%;padding:1rem 0.75rem 0.25rem;border:1px solid #d1d5db;border-radius:0.5rem;font-size:1rem;background:#fff;}
+    .form-group label{position:absolute;left:0.75rem;top:0.75rem;color:var(--muted);font-size:0.875rem;pointer-events:none;transition:all .2s;}
+    .form-group input:focus+label,.form-group input:not(:placeholder-shown)+label,.form-group textarea:focus+label,.form-group textarea:not(:placeholder-shown)+label,.form-group select:focus+label,.form-group select:not([value=""]) + label{transform:translateY(-0.6rem);font-size:0.75rem;background:var(--bg);padding:0 0.25rem;}
+    button{cursor:pointer;background:var(--primary);color:#fff;border:none;border-radius:0.5rem;padding:0.6rem 1.25rem;font-size:1rem;}
+    .table-wrap{overflow:auto;}
+    table{width:100%;border-collapse:collapse;background:#fff;}
+    thead th{position:sticky;top:0;background:#e5e7eb;text-align:left;padding:0.5rem 0.75rem;font-weight:600;}
+    tbody tr:nth-child(even){background:#f3f4f6;}
+    tbody tr:hover{background:#e5e7eb;}
+    tbody td{padding:0.5rem 0.75rem;}
+    .action-btn{background:none;border:none;font-size:1.2rem;line-height:1;color:var(--primary);cursor:pointer;}
+    .search-bar{margin-bottom:0.5rem;display:flex;justify-content:flex-end;}
+    .search-bar input{width:100%;max-width:250px;border:1px solid #d1d5db;border-radius:0.5rem;padding:0.35rem 0.75rem;}
+    /* skeleton class applied via JS while loading */
+    .skeleton{animation:pulse 1.5s ease-in-out infinite;background:linear-gradient(90deg,#f3f4f6 25%,#e5e7eb 50%,#f3f4f6 75%);background-size:200% 100%;}
+    @keyframes pulse{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+    @media(max-width:600px){.navbar a{margin-right:0.5rem;}}
+  </style>
 </head>
 <body>
-  <div id="login" class="login">
-    <h2>Admin Login</h2>
+
+<nav class="navbar" aria-label="Admin navigation">
+  <div class="container">
+    <a href="index.html" class="fw-bold">WedaKiriya.lk</a>
+    <div class="nav-links">
+      <a href="#" id="navDashboard">Dashboard</a>
+      <a href="#" id="navBiz">Businesses</a>
+      <a href="#" id="navCat">Categories</a>
+      <a href="#" id="navCity">Cities</a>
+      <a href="#" id="navUsers">Users</a>
+      <a href="#" id="logoutBtn">Logout</a>
+    </div>
+    <div class="user">
+      <span id="adminName">Admin</span><!-- JS fills admin name -->
+      <img id="adminAvatar" src="images/avatar.svg" alt="Admin avatar"><!-- JS fills avatar -->
+    </div>
+  </div>
+</nav>
+
+<main class="container">
+  <div id="login" class="card" aria-labelledby="loginHeading">
+    <h2 id="loginHeading">Admin Login</h2>
     <form id="loginForm">
-      <input type="email" name="email" placeholder="Email" required />
-      <input type="password" name="password" placeholder="Password" required />
+      <div class="form-group">
+        <input type="email" name="email" id="loginEmail" placeholder=" " required>
+        <label for="loginEmail">Email</label>
+      </div>
+      <div class="form-group">
+        <input type="password" name="password" id="loginPassword" placeholder=" " required>
+        <label for="loginPassword">Password</label>
+      </div>
       <button type="submit">Login</button>
     </form>
   </div>
 
-  <div id="adminPanel">
-    <div class="actions">
-      <button id="logoutBtn">Logout</button>
-      <button id="fetchCities">Fetch All Sri Lankan Cities</button>
-      <button id="saveCities" class="hide">Save Cities</button>
-      <button id="fetchCategories">Fetch Business Categories</button>
-      <button id="saveCategories" class="hide">Save Categories</button>
-      <button id="exportJson">Export JSON</button>
-      <button id="exportCsv">Export CSV</button>
-      <input type="file" id="importFile" accept=".json,.csv" />
-    </div>
-    <div id="preview" class="hide"></div>
-    <div class="dashboard" id="dashboard"></div>
+  <div id="adminPanel" class="hide">
+    <section class="card" aria-labelledby="bizHeading">
+      <h2 id="bizHeading">Add/Edit Business</h2>
+      <form id="bizForm">
+        <input type="hidden" name="id">
+        <div class="form-group">
+          <input type="text" name="name" id="bizName" placeholder=" " required>
+          <label for="bizName">Name</label>
+        </div>
+        <div class="form-group">
+          <input type="text" name="owner" id="bizOwner" placeholder=" ">
+          <label for="bizOwner">Owner</label>
+        </div>
+        <div class="form-group">
+          <select name="category" id="catSelect" required>
+            <option value="" disabled selected></option>
+          </select>
+          <label for="catSelect">Category</label>
+        </div>
+        <div class="form-group">
+          <input type="text" name="contact" id="bizContact" placeholder=" ">
+          <label for="bizContact">Contact</label>
+        </div>
+        <div class="form-group">
+          <select name="city" id="citySelect" required>
+            <option value="" disabled selected></option>
+          </select>
+          <label for="citySelect">City</label>
+        </div>
+        <div class="form-group">
+          <textarea name="description" id="bizDesc" rows="4" placeholder=" "></textarea>
+          <label for="bizDesc">Description</label>
+        </div>
+        <button type="submit">Save</button>
+        <button type="button" id="cancelEdit" class="hide">Cancel</button>
+      </form>
+      <div class="search-bar">
+        <input type="search" id="bizSearch" placeholder="Search businesses">
+      </div>
+      <div class="table-wrap">
+        <table id="bizTable" aria-label="Businesses table">
+          <thead>
+            <tr><th>Name</th><th>City</th><th>Category</th><th>Owner</th><th>Actions</th></tr>
+          </thead>
+          <tbody id="bizBody"><!-- populated by admin.js --></tbody>
+        </table>
+      </div>
+    </section>
 
-    <h3>Add / Edit Business</h3>
-    <form id="bizForm">
-      <input type="hidden" name="id" />
-      <input type="text" name="name" placeholder="Name" required />
-      <input type="text" name="owner" placeholder="Owner" />
-      <select name="category" id="catSelect" required></select>
-      <input type="text" name="contact" placeholder="Contact" />
-      <select name="city" id="citySelect" required></select>
-      <textarea name="description" placeholder="Description"></textarea>
-      <button type="submit">Save</button>
-      <button type="button" id="cancelEdit" class="hide">Cancel</button>
-    </form>
+    <section class="card" aria-labelledby="catHeading">
+      <h2 id="catHeading">Manage Categories</h2>
+      <form id="categoryForm">
+        <input type="hidden" name="id">
+        <div class="form-group">
+          <input type="text" name="name" id="catName" placeholder=" " required>
+          <label for="catName">Category name</label>
+        </div>
+        <button type="submit">Save</button>
+        <button type="button" id="cancelCategory" class="hide">Cancel</button>
+      </form>
+      <div class="search-bar">
+        <input type="search" id="catSearch" placeholder="Search categories">
+      </div>
+      <div class="table-wrap">
+        <table id="categoryTable" aria-label="Categories table">
+          <thead><tr><th>Name</th><th>Actions</th></tr></thead>
+          <tbody id="categoryBody"><!-- populated by admin.js --></tbody>
+        </table>
+      </div>
+    </section>
 
-    <table class="table" id="bizTable">
-      <thead>
-        <tr><th>Name</th><th>City</th><th>Category</th><th>Owner</th><th></th></tr>
-      </thead>
-      <tbody id="bizBody"></tbody>
-    </table>
+    <section class="card" aria-labelledby="cityHeading">
+      <h2 id="cityHeading">Manage Cities</h2>
+      <form id="cityForm">
+        <input type="hidden" name="id">
+        <div class="form-group">
+          <input type="text" name="name" id="cityName" placeholder=" " required>
+          <label for="cityName">City name</label>
+        </div>
+        <button type="submit">Save</button>
+        <button type="button" id="cancelCity" class="hide">Cancel</button>
+      </form>
+      <div class="search-bar">
+        <input type="search" id="citySearch" placeholder="Search cities">
+      </div>
+      <div class="table-wrap">
+        <table id="cityTable" aria-label="Cities table">
+          <thead><tr><th>Name</th><th>Actions</th></tr></thead>
+          <tbody id="cityBody"><!-- populated by admin.js --></tbody>
+        </table>
+      </div>
+    </section>
 
-    <h3>Manage Categories</h3>
-    <form id="categoryForm">
-      <input type="hidden" name="id" />
-      <input type="text" name="name" placeholder="Category name" required />
-      <button type="submit">Save</button>
-      <button type="button" id="cancelCategory" class="hide">Cancel</button>
-    </form>
-    <table class="table" id="categoryTable">
-      <thead>
-        <tr><th>Name</th><th></th></tr>
-      </thead>
-      <tbody id="categoryBody"></tbody>
-    </table>
-
-    <h3>Manage Cities</h3>
-    <form id="cityForm">
-      <input type="hidden" name="id" />
-      <input type="text" name="name" placeholder="City name" required />
-      <button type="submit">Save</button>
-      <button type="button" id="cancelCity" class="hide">Cancel</button>
-    </form>
-    <table class="table" id="cityTable">
-      <thead>
-        <tr><th>Name</th><th></th></tr>
-      </thead>
-      <tbody id="cityBody"></tbody>
-    </table>
+    <section class="card" aria-labelledby="userHeading">
+      <h2 id="userHeading">Manage Users</h2>
+      <div class="search-bar">
+        <input type="search" id="userSearch" placeholder="Search users">
+      </div>
+      <div class="table-wrap">
+        <table id="userTable" aria-label="Users table">
+          <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="userBody"><!-- populated by admin.js --></tbody>
+        </table>
+      </div>
+    </section>
   </div>
+</main>
 
-  <script type="module" src="js/admin.js"></script>
+<script type="module" src="js/admin.js"></script>
 </body>
 </html>
