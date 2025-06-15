@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Service details on WedaKiriya.lk">
-    <meta property="og:title" content="Service Details">
-    <meta property="og:description" content="Local service information">
-    <meta property="og:image" content="images/hero.svg">
+    <meta id="metaDesc" name="description" content="Service details on WedaKiriya.lk">
+    <meta id="metaOgTitle" property="og:title" content="Service Details">
+    <meta id="metaOgDesc" property="og:description" content="Local service information">
+    <meta id="metaOgImg" property="og:image" content="images/hero.svg">
     <title>Service Details - WedaKiriya.lk</title>
 <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/style.css">
@@ -45,12 +45,20 @@
     const s = list.find(item => item.id === id);
     if (s) {
         document.title = `${s.name} - WedaKiriya.lk`;
+        document.getElementById('metaDesc').setAttribute('content', `${s.name} in ${s.city}. Contact ${s.phone}`);
+        document.getElementById('metaOgTitle').setAttribute('content', s.name);
+        document.getElementById('metaOgDesc').setAttribute('content', s.description);
+        document.getElementById('metaOgImg').setAttribute('content', 'images/hero.svg');
         container.innerHTML = `
             <h1 class="mb-3" data-aos="fade-down">${s.name}</h1>
             <p class="text-muted" data-aos="fade-down">${s.city}</p>
             <a href="https://wa.me/94${s.phone.substring(1)}" target="_blank" class="btn btn-success mb-2" data-aos="fade-up">${t('whatsapp_now')}</a>
             <a href="tel:${s.phone}" class="d-block mb-3" data-aos="fade-up">${s.phone}</a>
             <p data-aos="fade-up">${s.description}</p>
+            <div class="flex gap-2 my-2" data-aos="fade-up">
+              <a aria-label="Share on WhatsApp" class="bg-green-500 text-white px-2 py-1 rounded" target="_blank" id="waShare">WhatsApp</a>
+              <a aria-label="Share on Facebook" class="bg-blue-600 text-white px-2 py-1 rounded" target="_blank" id="fbShare">Facebook</a>
+            </div>
             <iframe data-aos="fade-up" src="https://www.google.com/maps?q=${encodeURIComponent(s.city)}&output=embed" width="100%" height="300" style="border:0;" allowfullscreen loading="lazy"></iframe>
             <form class="mt-4" data-aos="fade-up">
                 <div class="mb-3"><input type="text" class="form-control" placeholder="${t('form_name')}"></div>
@@ -58,6 +66,9 @@
                 <div class="mb-3"><textarea class="form-control" rows="4" placeholder="${t('form_message')}"></textarea></div>
                 <button type="submit" class="btn btn-primary">${t('send')}</button>
             </form>`;
+        const shareUrl = location.href;
+        document.getElementById('waShare').href = `https://wa.me/?text=${encodeURIComponent(s.name + ' - ' + shareUrl)}`;
+        document.getElementById('fbShare').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
     } else {
         container.textContent = t('not_found');
     }
