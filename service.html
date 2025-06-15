@@ -42,7 +42,12 @@ import { getSupabase } from "./js/supabaseClient.js";
     const id = params.get('id');
     const container = document.getElementById('service-details');
     const list = window.servicesData || [];
-    const s = list.find(item => item.id === id);
+    let s = list.find(item => item.id === id);
+    if (!s) {
+        const supabase = await getSupabase();
+        const { data } = await supabase.from('listings').select('*').eq('id', id).single();
+        s = data;
+    }
     if (s) {
         document.title = `${s.name} - WedaKiriya.lk`;
         document.getElementById('metaDesc').setAttribute('content', `${s.name} in ${s.city}. Contact ${s.phone}`);
@@ -55,6 +60,7 @@ import { getSupabase } from "./js/supabaseClient.js";
             <a href="https://wa.me/94${s.phone.substring(1)}" target="_blank" class="btn btn-success mb-2" data-aos="fade-up">${t('whatsapp_now')}</a>
             <a href="tel:${s.phone}" class="d-block mb-3" data-aos="fade-up">${s.phone}</a>
             <p data-aos="fade-up">${s.description}</p>
+            <div id="gallery" class="gallery" data-aos="fade-up"></div>
             <div class="flex gap-2 my-2" data-aos="fade-up">
               <a aria-label="Share on WhatsApp" class="bg-green-500 text-white px-2 py-1 rounded" target="_blank" id="waShare">WhatsApp</a>
               <a aria-label="Share on Facebook" class="bg-blue-600 text-white px-2 py-1 rounded" target="_blank" id="fbShare">Facebook</a>
@@ -71,6 +77,16 @@ import { getSupabase } from "./js/supabaseClient.js";
         document.getElementById('waShare').href = `https://wa.me/?text=${encodeURIComponent(s.name + ' - ' + shareUrl)}`;
         document.getElementById('fbShare').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
         const supabase = await getSupabase();
+        const { data: imgs } = await supabase.from('listing_images').select('image_url').eq('listing_id', id);
+        if(imgs && imgs.length){
+          const gal = document.getElementById('gallery');
+          imgs.forEach(i=>{
+            const imgEl = document.createElement('img');
+            imgEl.src = i.image_url;
+            imgEl.className = 'gallery-img';
+            gal.appendChild(imgEl);
+          });
+        }
         document.getElementById('reportBtn').onclick = async () => {
           const { data: { user } } = await supabase.auth.getUser();
           if(!user){ alert('Login first'); return; }
