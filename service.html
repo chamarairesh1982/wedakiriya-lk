@@ -41,16 +41,25 @@
     <script src="js/ui.js"></script>
     <script type="module">
     AOS.init();
-import { getSupabase } from "./js/supabaseClient.js";
+    let getSupabase;
+    try {
+      ({ getSupabase } = await import('./js/supabaseClient.js'));
+    } catch (e) {
+      console.error('Failed to load Supabase client', e);
+    }
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
     const container = document.getElementById('service-details');
     const list = window.servicesData || [];
     let s = list.find(item => item.id === id);
-    if (!s) {
-        const supabase = await getSupabase();
-        const { data } = await supabase.from('listings').select('*').eq('id', id).single();
-        s = data;
+    if (!s && getSupabase) {
+        try {
+          const supabase = await getSupabase();
+          const { data } = await supabase.from('listings').select('*').eq('id', id).single();
+          s = data;
+        } catch (e) {
+          console.error('Failed to load data from Supabase', e);
+        }
     }
     if (s) {
         document.title = `${s.name} - WedaKiriya.lk`;
