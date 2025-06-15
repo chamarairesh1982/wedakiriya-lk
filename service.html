@@ -108,8 +108,14 @@
             </div>`;
           if (typeof applyTranslations === 'function') applyTranslations();
         const shareUrl = location.href;
-        document.getElementById('waShare').href = `https://wa.me/?text=${encodeURIComponent(s.name + ' - ' + shareUrl)}`;
-        document.getElementById('fbShare').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
+        const waBtn = document.getElementById('waShare');
+        if (waBtn) {
+          waBtn.href = `https://wa.me/?text=${encodeURIComponent(s.name + ' - ' + shareUrl)}`;
+        }
+        const fbBtn = document.getElementById('fbShare');
+        if (fbBtn) {
+          fbBtn.href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
+        }
         const supabase = await getSupabase();
         const { data: imgs } = await supabase.from('listing_images').select('image_url').eq('listing_id', id);
         if(imgs && imgs.length){
