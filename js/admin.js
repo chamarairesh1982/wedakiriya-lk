@@ -1,8 +1,12 @@
 import { getSupabase } from './supabaseClient.js';
 let supabase;
-let cities = [];
-let categories = [];
-let editing = null;
+let fetchedCities = [];
+let fetchedCategories = [];
+let cityData = [];
+let categoryData = [];
+let editingBiz = null;
+let editingCity = null;
+let editingCat = null;
 
 const loginForm = document.getElementById('loginForm');
 const loginBox = document.getElementById('login');
@@ -12,7 +16,13 @@ const preview = document.getElementById('preview');
 const citySel = document.getElementById('citySelect');
 const catSel = document.getElementById('catSelect');
 const bizBody = document.getElementById('bizBody');
-const cancelBtn = document.getElementById('cancelEdit');
+const cancelBizBtn = document.getElementById('cancelEdit');
+const cityForm = document.getElementById('cityForm');
+const cityBody = document.getElementById('cityBody');
+const cancelCityBtn = document.getElementById('cancelCity');
+const categoryForm = document.getElementById('categoryForm');
+const categoryBody = document.getElementById('categoryBody');
+const cancelCategoryBtn = document.getElementById('cancelCategory');
 
 async function init() {
   supabase = await getSupabase();
@@ -52,14 +62,14 @@ async function fetchCities() {
   const url = 'https://query.wikidata.org/sparql?format=json&query=' + encodeURIComponent(query);
   const res = await fetch(url);
   const json = await res.json();
-  cities = json.results.bindings.map(b => b.cityLabel.value);
-  preview.innerHTML = '<h4>Cities</h4><ul>' + cities.map(c => `<li>${c}</li>`).join('') + '</ul>';
+  fetchedCities = json.results.bindings.map(b => b.cityLabel.value);
+  preview.innerHTML = '<h4>Cities</h4><ul>' + fetchedCities.map(c => `<li>${c}</li>`).join('') + '</ul>';
   preview.classList.remove('hide');
   document.getElementById('saveCities').classList.remove('hide');
 }
 
 async function saveCities() {
-  const rows = cities.map(name => ({ name }));
+  const rows = fetchedCities.map(name => ({ name }));
   await supabase.from('cities').insert(rows).select();
   preview.classList.add('hide');
   document.getElementById('saveCities').classList.add('hide');
@@ -68,16 +78,16 @@ async function saveCities() {
 
 // Fetch categories from open dataset
 async function fetchCategories() {
-  const res = await fetch('https://raw.githubusercontent.com/dariusk/corpora/master/data/business/business_types.json');
+  const res = await fetch('https://raw.githubusercontent.com/dariusk/corpora/master/data/corporations/industries.json');
   const json = await res.json();
-  categories = json.business_types.slice(0, 30);
-  preview.innerHTML = '<h4>Categories</h4><ul>' + categories.map(c => `<li>${c}</li>`).join('') + '</ul>';
+  fetchedCategories = json.industries.slice(0, 30);
+  preview.innerHTML = '<h4>Categories</h4><ul>' + fetchedCategories.map(c => `<li>${c}</li>`).join('') + '</ul>';
   preview.classList.remove('hide');
   document.getElementById('saveCategories').classList.remove('hide');
 }
 
 async function saveCategories() {
-  const rows = categories.map(name => ({ name }));
+  const rows = fetchedCategories.map(name => ({ name }));
   await supabase.from('categories').insert(rows).select();
   preview.classList.add('hide');
   document.getElementById('saveCategories').classList.add('hide');
@@ -85,11 +95,15 @@ async function saveCategories() {
 }
 
 async function loadLists() {
-  const { data: cityData } = await supabase.from('cities').select();
-  const { data: catData } = await supabase.from('categories').select();
+  const { data: cData } = await supabase.from('cities').select().order('name');
+  const { data: catDataRes } = await supabase.from('categories').select().order('name');
+  cityData = cData || [];
+  categoryData = catDataRes || [];
   citySel.innerHTML = cityData.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
-  catSel.innerHTML = catData.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
-  dash.textContent = `Total businesses: ${await count('businesses')} | categories: ${catData.length} | cities: ${cityData.length}`;
+  catSel.innerHTML = categoryData.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+  cityBody.innerHTML = cityData.map(c => `<tr><td>${c.name}</td><td><button class="editCity" data-id="${c.id}">Edit</button> <button class="delCity" data-id="${c.id}">Delete</button></td></tr>`).join('');
+  categoryBody.innerHTML = categoryData.map(c => `<tr><td>${c.name}</td><td><button class="editCat" data-id="${c.id}">Edit</button> <button class="delCat" data-id="${c.id}">Delete</button></td></tr>`).join('');
+  dash.textContent = `Total businesses: ${await count('businesses')} | categories: ${categoryData.length} | cities: ${cityData.length}`;
 }
 
 async function count(tbl) {
@@ -109,16 +123,16 @@ async function loadBusinesses() {
 }
 
 function getName(id, type) {
-  const sel = type === 'city' ? citySel : catSel;
-  const opt = sel.querySelector(`option[value="${id}"]`);
-  return opt ? opt.textContent : '';
+  const arr = type === 'city' ? cityData : categoryData;
+  const obj = arr.find(c => c.id === id);
+  return obj ? obj.name : '';
 }
 
 bizBody.addEventListener('click', async (e) => {
   const id = e.target.dataset.id;
   if (e.target.classList.contains('edit')) {
     const { data } = await supabase.from('businesses').select('*').eq('id', id).single();
-    editing = id;
+    editingBiz = id;
     bizForm.id.value = id;
     bizForm.name.value = data.name;
     bizForm.owner.value = data.owner || '';
@@ -126,10 +140,38 @@ bizBody.addEventListener('click', async (e) => {
     bizForm.contact.value = data.contact || '';
     bizForm.city.value = data.city_id;
     bizForm.description.value = data.description || '';
-    cancelBtn.classList.remove('hide');
+    cancelBizBtn.classList.remove('hide');
   } else if (e.target.classList.contains('del')) {
     await supabase.from('businesses').delete().eq('id', id);
     loadBusinesses();
+    loadLists();
+  }
+});
+
+cityBody.addEventListener('click', async (e) => {
+  const id = e.target.dataset.id;
+  if (e.target.classList.contains('editCity')) {
+    const { data } = await supabase.from('cities').select('*').eq('id', id).single();
+    editingCity = id;
+    cityForm.id.value = id;
+    cityForm.name.value = data.name;
+    cancelCityBtn.classList.remove('hide');
+  } else if (e.target.classList.contains('delCity')) {
+    await supabase.from('cities').delete().eq('id', id);
+    loadLists();
+  }
+});
+
+categoryBody.addEventListener('click', async (e) => {
+  const id = e.target.dataset.id;
+  if (e.target.classList.contains('editCat')) {
+    const { data } = await supabase.from('categories').select('*').eq('id', id).single();
+    editingCat = id;
+    categoryForm.id.value = id;
+    categoryForm.name.value = data.name;
+    cancelCategoryBtn.classList.remove('hide');
+  } else if (e.target.classList.contains('delCat')) {
+    await supabase.from('categories').delete().eq('id', id);
     loadLists();
   }
 });
@@ -145,27 +187,68 @@ bizForm.addEventListener('submit', async (e) => {
     city_id: form.city,
     description: form.description
   };
-  if (editing) {
-    await supabase.from('businesses').update(payload).eq('id', editing);
+  if (editingBiz) {
+    await supabase.from('businesses').update(payload).eq('id', editingBiz);
   } else {
     await supabase.from('businesses').insert(payload);
   }
   bizForm.reset();
-  editing = null;
-  cancelBtn.classList.add('hide');
+  editingBiz = null;
+  cancelBizBtn.classList.add('hide');
   loadBusinesses();
   loadLists();
 });
 
-cancelBtn.addEventListener('click', () => {
+cityForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const form = Object.fromEntries(new FormData(cityForm));
+  if (editingCity) {
+    await supabase.from('cities').update({ name: form.name }).eq('id', editingCity);
+  } else {
+    await supabase.from('cities').insert({ name: form.name });
+  }
+  cityForm.reset();
+  editingCity = null;
+  cancelCityBtn.classList.add('hide');
+  loadLists();
+});
+
+categoryForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const form = Object.fromEntries(new FormData(categoryForm));
+  if (editingCat) {
+    await supabase.from('categories').update({ name: form.name }).eq('id', editingCat);
+  } else {
+    await supabase.from('categories').insert({ name: form.name });
+  }
+  categoryForm.reset();
+  editingCat = null;
+  cancelCategoryBtn.classList.add('hide');
+  loadLists();
+});
+
+cancelCityBtn.addEventListener('click', () => {
+  cityForm.reset();
+  editingCity = null;
+  cancelCityBtn.classList.add('hide');
+});
+
+cancelCategoryBtn.addEventListener('click', () => {
+  categoryForm.reset();
+  editingCat = null;
+  cancelCategoryBtn.classList.add('hide');
+});
+
+cancelBizBtn.addEventListener('click', () => {
   bizForm.reset();
-  editing = null;
-  cancelBtn.classList.add('hide');
+  editingBiz = null;
+  cancelBizBtn.classList.add('hide');
 });
 
 // Export JSON/CSV
 async function exportData(type) {
   const { data } = await supabase.from('businesses').select('*');
+  if (!data || !data.length) return;
   if (type === 'json') {
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     download(blob, 'businesses.json');

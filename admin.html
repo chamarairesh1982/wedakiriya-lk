@@ -49,6 +49,34 @@
       </thead>
       <tbody id="bizBody"></tbody>
     </table>
+
+    <h3>Manage Categories</h3>
+    <form id="categoryForm">
+      <input type="hidden" name="id" />
+      <input type="text" name="name" placeholder="Category name" required />
+      <button type="submit">Save</button>
+      <button type="button" id="cancelCategory" class="hide">Cancel</button>
+    </form>
+    <table class="table" id="categoryTable">
+      <thead>
+        <tr><th>Name</th><th></th></tr>
+      </thead>
+      <tbody id="categoryBody"></tbody>
+    </table>
+
+    <h3>Manage Cities</h3>
+    <form id="cityForm">
+      <input type="hidden" name="id" />
+      <input type="text" name="name" placeholder="City name" required />
+      <button type="submit">Save</button>
+      <button type="button" id="cancelCity" class="hide">Cancel</button>
+    </form>
+    <table class="table" id="cityTable">
+      <thead>
+        <tr><th>Name</th><th></th></tr>
+      </thead>
+      <tbody id="cityBody"></tbody>
+    </table>
   </div>
 
   <script type="module" src="js/admin.js"></script>

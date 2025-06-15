@@ -53,4 +53,14 @@ button {
   margin-top: 10px;
   font-weight: 600;
 }
+.table button {
+  margin-right: 4px;
+}
+form {
+  margin-bottom: 10px;
+}
+form input, form select, form textarea {
+  margin-right: 6px;
+  padding: 6px;
+}
 .hide { display: none; }
