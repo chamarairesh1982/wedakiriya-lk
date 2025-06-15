@@ -26,8 +26,9 @@
     .navbar .container{display:flex;align-items:center;justify-content:space-between;padding:0.5rem 1rem;flex-wrap:wrap;}
     .navbar a{color:#fff;text-decoration:none;margin-right:1rem;font-weight:600;}
     .navbar .nav-links{display:flex;align-items:center;flex-wrap:wrap;}
-    .navbar .user{display:flex;align-items:center;margin-left:auto;}
-    .navbar img{width:32px;height:32px;border-radius:50%;margin-left:0.5rem;}
+    .navbar .user-link{display:flex;align-items:center;gap:0.5rem;margin-left:auto;color:#fff;text-decoration:none;padding:0.25rem 0.5rem;border-radius:0.25rem;}
+    .navbar .user-link:hover{background:rgba(255,255,255,0.15);}
+    .navbar .user-link img{width:32px;height:32px;border-radius:50%;object-fit:cover;}
     .container{width:90%;max-width:1200px;margin:0 auto;}
     section{margin-bottom:2rem;}
     .card{background:#fff;border-radius:0.5rem;padding:1rem;box-shadow:0 1px 3px rgba(0,0,0,0.1);}
@@ -55,7 +56,10 @@
     /* skeleton class applied via JS while loading */
     .skeleton{animation:pulse 1.5s ease-in-out infinite;background:linear-gradient(90deg,#f3f4f6 25%,#e5e7eb 50%,#f3f4f6 75%);background-size:200% 100%;}
     @keyframes pulse{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
-    @media(max-width:600px){.navbar a{margin-right:0.5rem;}}
+    @media(max-width:600px){
+      .navbar a{margin-right:0.5rem;}
+      .navbar .user-link{margin-top:0.5rem;}
+    }
   </style>
 </head>
 <body>
@@ -71,10 +75,10 @@
       <a href="#" id="navUsers">Users</a>
       <a href="#" id="logoutBtn">Logout</a>
     </div>
-    <div class="user">
+    <a href="#profile" class="user-link" aria-label="Profile">
       <span id="adminName">Admin</span><!-- JS fills admin name -->
       <img id="adminAvatar" src="images/avatar.svg" alt="Admin avatar"><!-- JS fills avatar -->
-    </div>
+    </a>
   </div>
 </nav>
 
