@@ -4,15 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cities | WedaKiriya.lk</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 <body class="pt-12">
 <nav class="bg-blue-600 fixed w-full top-0 z-50">
-  <div class="max-w-6xl mx-auto px-4 flex items-center justify-between text-white">
+  <div class="container flex items-center justify-between text-white">
     <a class="font-bold text-lg py-2" href="index.html" aria-label="WedaKiriya home">WedaKiriya.lk</a>
-    <button id="navToggle" class="lg:hidden focus:outline-none">&#9776;</button>
-    <div id="navMenu" class="hidden lg:flex items-center space-x-4">
+    <div id="navMenu" class="hidden flex items-center">
       <a class="block py-2" href="index.html">Home</a>
       <a class="block py-2" href="about.html">About</a>
       <a class="block py-2" href="submit.html">Submit</a>
@@ -30,7 +28,7 @@
     &copy; 2024 WedaKiriya.lk
   </div>
 </footer>
-<script>document.getElementById('navToggle').addEventListener('click',()=>document.getElementById('navMenu').classList.toggle('hidden'));</script>
+<script>document.getElementById("navToggle").addEventListener("click",()=>document.getElementById("navMenu").classList.toggle("hidden"));</script>
 <script type="module" src="js/cities.js"></script>
 </body>
 </html>
