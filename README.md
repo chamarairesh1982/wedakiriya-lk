@@ -63,4 +63,5 @@ The repository now ships with small SVG icons, so it works offline without exter
 - Listings now support comments. Users can post comments on a listing and report inappropriate ones, stored in `comments` and `comment_reports` tables.
 =======
 - `dashboard.html` shows a simple user dashboard where logged in users can view and remove their favourites and logout.
+- `admin-dashboard.html` offers analytics charts and a moderation table for reported listings. It requires an admin account from the `admin_users` table. The updated `sql/extended_schema.sql` script adds `category` and `is_active` columns to `listings` and a `status` column to `reports` for this dashboard.
 

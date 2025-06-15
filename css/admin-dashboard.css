@@ -1,0 +1,7 @@
+#dashboard { display:none; max-width:1000px; margin:20px auto; }
+.stats { display:flex; flex-wrap:wrap; gap:1rem; margin-bottom:1rem; }
+.stats div { background:#fff; border:1px solid #ddd; border-radius:4px; padding:10px; flex:1 1 150px; text-align:center; }
+#moderation-table { width:100%; border-collapse:collapse; }
+#moderation-table th, #moderation-table td { border:1px solid #ddd; padding:6px; }
+#moderation-table button { margin-right:4px; }
+@media (max-width:600px){ .stats { flex-direction:column; } }
