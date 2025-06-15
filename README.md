@@ -41,7 +41,7 @@ The repository now ships with small SVG icons, so it works offline without exter
      "SUPABASE_ANON_KEY": "your-anon-key"
    }
    ```
-5. Sign up at least one user using `admin.html` and mark that user as an admin by ensuring the `is_admin` column in the `users` table is `true`.
+5. Sign up at least one user using `admin.html`. The SQL script adds the first registered user to the `admin_users` table so they can access the admin panel. Additional admins can be inserted into this table manually. If you receive a `404` response from `/rest/v1/admin_users`, verify this table exists in your project.
 
 ## Deploying to GitHub Pages
 1. Push the repository to your GitHub account.
