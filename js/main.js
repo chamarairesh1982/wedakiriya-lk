@@ -1,3 +1,4 @@
+import { loadOffer } from "./offer.js";
 AOS.init({ once: true });
 const searchInput = document.getElementById('searchInput');
 const categoryButtons = document.querySelectorAll('.category-btn');
@@ -96,3 +97,4 @@ categoryButtons.forEach(btn => {
     applyFilters();
   });
 });
+document.addEventListener("DOMContentLoaded", loadOffer);
