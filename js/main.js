@@ -38,6 +38,7 @@ function createCard(s, featured = false) {
         <div class="contact-btns d-flex justify-content-center gap-2">
           <a href="https://wa.me/94${s.phone.substring(1)}" target="_blank" class="btn btn-success btn-sm flex-fill flex-sm-auto">📱 ${t('whatsapp_now')}</a>
           <a href="service.html?id=${s.id}" class="btn btn-outline-primary btn-sm flex-fill flex-sm-auto">${t('view_details')}</a>
+          <button type="button" class="btn btn-secondary btn-sm flex-fill flex-sm-auto share-btn" data-id="${s.id}">${t('share')}</button>
         </div>
       </div>
     </div>
@@ -60,6 +61,7 @@ function renderFeatured() {
   if (!featuredContainer) return;
   featuredContainer.innerHTML = '';
   featured.forEach(s => featuredContainer.insertAdjacentHTML('beforeend', createCard(s, true)));
+  attachShareListeners();
 }
 
 function renderNextPage(reset = false) {
@@ -72,6 +74,7 @@ function renderNextPage(reset = false) {
     return;
   }
   pageItems.forEach(s => container.insertAdjacentHTML('beforeend', createCard(s)));
+  attachShareListeners();
   if (currentPage * perPage >= filtered.length) {
     loadMoreTrigger.classList.add('d-none');
     if (observer) observer.disconnect();
@@ -83,6 +86,7 @@ function renderNextPage(reset = false) {
 function setupObserver() {
   if (observer) observer.disconnect();
   attachFavListeners();
+  attachShareListeners();
   if (currentPage * perPage >= filtered.length) return;
   observer = new IntersectionObserver(entries => {
     if (entries[0].isIntersecting) {
@@ -119,6 +123,22 @@ function attachFavListeners(){
         await supabase.from("favorites").insert({ user_id:user.id, listing_id:id });
         userFavorites.push(id);
         btn.innerHTML="&#9733;";
+      }
+    };
+  });
+}
+
+function attachShareListeners(){
+  document.querySelectorAll('.share-btn').forEach(btn=>{
+    btn.onclick=()=>{
+      const id=btn.dataset.id;
+      const s=services.find(x=>x.id===id);
+      const url=`${location.origin}/service.html?id=${id}`;
+      if(navigator.share){
+        navigator.share({ title:s.name, text:s.description, url });
+      }else{
+        const link=`https://wa.me/?text=${encodeURIComponent(s.name+' - '+url)}`;
+        window.open(link,'_blank');
       }
     };
   });
