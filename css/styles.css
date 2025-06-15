@@ -30,6 +30,7 @@ nav {
   color: #fff;
 }
 nav a {
+  margin-left: 1rem;
   color: #fff;
   text-decoration: none;
   font-weight: 600;
@@ -213,3 +214,37 @@ footer {
 }
 .btn-primary:hover { background:#1d4ed8; }
 
+/* Utility classes for compatibility (mimic old Tailwind classes) */
+.bg-blue-600, .bg-primary { background: var(--primary); color:#fff; }
+.bg-white { background:#fff; }
+.bg-light { background:#f8fafd; }
+.text-white { color:#fff; }
+.text-blue-600 { color: var(--primary); }
+.text-center { text-align:center; }
+.text-end { text-align:end; }
+.text-start { text-align:start; }
+.text-muted { color: var(--muted); }
+.text-lg { font-size:1.125rem; }
+.text-xl { font-size:1.25rem; }
+.text-2xl { font-size:1.5rem; }
+.small { font-size:0.875rem; }
+.rounded { border-radius:0.5rem; }
+.rounded-full { border-radius:9999px; }
+.border { border:1px solid #d1d5db; }
+.btn { display:inline-block; }
+.px-3 { padding-left:0.75rem; padding-right:0.75rem; }
+.py-1 { padding-top:0.25rem; padding-bottom:0.25rem; }
+.p-2 { padding:0.5rem; }
+.p-3 { padding:0.75rem; }
+.p-4 { padding:1rem; }
+.mt-4 { margin-top:1rem; }
+.mb-4 { margin-bottom:1rem; }
+.mx-auto { margin-left:auto; margin-right:auto; }
+.max-w-4xl { max-width:64rem; }
+.w-full { width:100%; }
+.hidden { display:none; }
+.flex { display:flex; }
+.items-center { align-items:center; }
+.justify-between { justify-content:space-between; }
+.gap-2 { gap:0.5rem; }
+.ml-auto{margin-left:auto;}

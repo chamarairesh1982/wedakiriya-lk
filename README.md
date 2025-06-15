@@ -1,12 +1,12 @@
 # WedaKiriya.lk
 
-A simple static directory to showcase local services in Sri Lanka. Built with HTML, CSS and [Bootstrap 5](https://getbootstrap.com/). This repository is ready to be hosted on GitHub Pages.
+A simple static directory to showcase local services in Sri Lanka. Built with Vanilla HTML, CSS and JS. This repository is ready to be hosted on GitHub Pages.
 
 You can view the live site at [https://chamarairesh1982.github.io/wedakiriya-lk/](https://chamarairesh1982.github.io/wedakiriya-lk/).
 
 ## Structure
 - `index.html` – main page listing sample services
-- `css/style.css` – custom styling
+- `css/styles.css` – custom styling
 - `images/` – contains local SVG icons for the hero section and service cards
 - `data/services.js` – small JS array of service listings used by the homepage
 
@@ -49,6 +49,7 @@ The repository now ships with small SVG icons, so it works offline without exter
 3. The site will be available at `https://<username>.github.io/wedakiriya-lk/`.
 
 ## Using the Admin Panel
-1. Navigate to `admin.html` on your deployed site.
-2. Log in with an admin account. Only users flagged as admins in the `users` table can access the panel.
-3. From the panel you can manage offers, cities, categories and business listings. Changes are reflected instantly via Supabase.
+1. Open `admin.html` in the browser.
+2. Enter the admin password (`wedakiriya` by default).
+3. Use the buttons to import Sri Lankan cities and default categories.
+4. The imported lists are displayed below each button.
