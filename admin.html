@@ -47,6 +47,11 @@
     .action-btn{background:none;border:none;font-size:1.2rem;line-height:1;color:var(--primary);cursor:pointer;}
     .search-bar{margin-bottom:0.5rem;display:flex;justify-content:flex-end;}
     .search-bar input{width:100%;max-width:250px;border:1px solid #d1d5db;border-radius:0.5rem;padding:0.35rem 0.75rem;}
+    .actions{display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1rem;align-items:center;}
+    .actions button,.actions .file-btn{background:var(--primary);color:#fff;border:none;border-radius:0.5rem;padding:0.45rem 0.9rem;font-size:0.875rem;cursor:pointer;}
+    .actions input[type="file"]{display:none;}
+    .dashboard{font-weight:600;margin-bottom:1rem;}
+    .hide{display:none;}
     /* skeleton class applied via JS while loading */
     .skeleton{animation:pulse 1.5s ease-in-out infinite;background:linear-gradient(90deg,#f3f4f6 25%,#e5e7eb 50%,#f3f4f6 75%);background-size:200% 100%;}
     @keyframes pulse{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
@@ -90,6 +95,22 @@
   </div>
 
   <div id="adminPanel" class="hide">
+    <section class="card actions" aria-labelledby="actionsHeading">
+      <h2 id="actionsHeading">Admin Actions</h2>
+      <button id="logoutBtn">Logout</button>
+      <button id="fetchCities">Fetch All Sri Lankan Cities</button>
+      <button id="saveCities" class="hide">Save Cities</button>
+      <button id="fetchCategories">Fetch Business Categories</button>
+      <button id="saveCategories" class="hide">Save Categories</button>
+      <button id="exportJson">Export JSON</button>
+      <button id="exportCsv">Export CSV</button>
+      <label class="file-btn">
+        Import File
+        <input type="file" id="importFile" accept=".json,.csv">
+      </label>
+    </section>
+    <div id="preview" class="card hide"></div>
+    <div id="dashboard" class="card dashboard"></div>
     <section class="card" aria-labelledby="bizHeading">
       <h2 id="bizHeading">Add/Edit Business</h2>
       <form id="bizForm">
