@@ -1,6 +1,5 @@
 import { getSupabase } from './supabaseClient.js';
 let supabase;
-let fetchedCities = [];
 let fetchedCategories = [];
 let cityData = [];
 let categoryData = [];
@@ -71,24 +70,62 @@ document.getElementById('logoutBtn').addEventListener('click', async () => {
   location.reload();
 });
 
-// Fetch Sri Lankan cities from Wikidata
-async function fetchCities() {
-  const query = `SELECT ?cityLabel WHERE { ?city wdt:P31/wdt:P279* wd:Q515; wdt:P17 wd:Q854. SERVICE wikibase:label { bd:serviceParam wikibase:language 'en'. } }`;
-  const url = 'https://query.wikidata.org/sparql?format=json&query=' + encodeURIComponent(query);
-  const res = await fetch(url);
-  const json = await res.json();
-  fetchedCities = json.results.bindings.map(b => b.cityLabel.value);
-  preview.innerHTML = '<h4>Cities</h4><ul>' + fetchedCities.map(c => `<li>${c}</li>`).join('') + '</ul>';
-  preview.classList.remove('hide');
-  document.getElementById('saveCities').classList.remove('hide');
-}
 
-async function saveCities() {
-  const rows = fetchedCities.map(name => ({ name }));
-  await supabase.from('cities').insert(rows).select();
-  preview.classList.add('hide');
-  document.getElementById('saveCities').classList.add('hide');
-  loadLists();
+// SPARQL to fetch all Sri Lankan cities with English labels
+const SPARQL_CITIES = `
+SELECT DISTINCT ?city ?cityLabel WHERE {
+  ?city wdt:P31/wdt:P279* wd:Q515;
+        wdt:P17 wd:Q854.
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
+}
+ORDER BY ?cityLabel
+`;
+
+// Fetch all cities from Wikidata and preview for import
+async function fetchAllSriLankaCities() {
+  const endpoint =
+    'https://query.wikidata.org/sparql?format=json&query=' +
+    encodeURIComponent(SPARQL_CITIES);
+  try {
+    const res = await fetch(endpoint);
+    if (!res.ok) throw new Error('Wikidata fetch failed');
+    const json = await res.json();
+    const fetched = [
+      ...new Set(json.results.bindings.map(b => b.cityLabel.value.trim()))
+    ];
+    const { data: current, error: cityErr } = await supabase
+      .from('cities')
+      .select('name');
+    if (cityErr) throw cityErr;
+    const existing = (current || []).map(c => c.name.trim());
+    const newCities = fetched.filter(name => !existing.includes(name));
+
+    preview.innerHTML =
+      `<h4>New Cities to Import (${newCities.length})</h4><ul>` +
+      newCities.map(c => `<li>${c}</li>`).join('') +
+      '</ul>';
+    preview.classList.remove('hide');
+
+    const saveBtn = document.getElementById('saveCities');
+    saveBtn.onclick = async () => {
+      if (!newCities.length) return alert('No new cities to add!');
+      const rows = newCities.map(name => ({ name }));
+      const { error } = await supabase.from('cities').insert(rows);
+      if (error) {
+        alert('❌ Error saving cities: ' + error.message);
+      } else {
+        alert('✅ Successfully imported all cities!');
+        preview.classList.add('hide');
+        saveBtn.classList.add('hide');
+        await loadLists();
+      }
+    };
+    saveBtn.classList.remove('hide');
+  } catch (err) {
+    preview.innerHTML =
+      `<span style="color:red">❌ Error fetching cities: ${err.message}</span>`;
+    preview.classList.remove('hide');
+  }
 }
 
 // Fetch categories from open dataset
@@ -300,8 +337,7 @@ async function importData(file) {
 
 // Event listeners
 
-document.getElementById('fetchCities').onclick = fetchCities;
-document.getElementById('saveCities').onclick = saveCities;
+document.getElementById('fetchCities').onclick = fetchAllSriLankaCities;
 document.getElementById('fetchCategories').onclick = fetchCategories;
 document.getElementById('saveCategories').onclick = saveCategories;
 document.getElementById('exportJson').onclick = () => exportData('json');
