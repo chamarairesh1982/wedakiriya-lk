@@ -136,18 +136,11 @@
     <div class="skeleton" style="width: 100%; height: 6rem;"></div>
   </div>
 </div>
-<script>
-const service = {
-  name: "ABC Tailors",
-  category: "Tailor",
-  city: "Colombo",
-  phone: "0771234567",
-  whatsapp: "0771234567",
-  description: "Expert tailoring services for men and women. Quick delivery.",
-  icon: "\u2702\uFE0F",
-  address: "123 Galle Road, Colombo",
-  website: "https://abctailors.lk"
-};
+<script type="module">
+import { getSupabase } from './js/supabaseClient.js';
+
+const params = new URLSearchParams(location.search);
+const id = params.get('id');
 
 function render(data){
   const card = document.getElementById('card');
@@ -191,9 +184,23 @@ function render(data){
   };
 }
 
-window.addEventListener('DOMContentLoaded', () => {
-  setTimeout(() => render(service), 600);
-});
+async function loadData(){
+  let data = (window.servicesData || []).find(s => s.id === id);
+  if(!data && id){
+    try{
+      const supabase = await getSupabase();
+      const res = await supabase.from('listings').select('*').eq('id', id).single();
+      data = res.data;
+    }catch(e){ console.error(e); }
+  }
+  if(data){
+    render(data);
+  }else{
+    document.getElementById('card').innerHTML = '<p>Service not found</p>';
+  }
+}
+
+window.addEventListener('DOMContentLoaded', loadData);
 </script>
 </body>
 </html>
