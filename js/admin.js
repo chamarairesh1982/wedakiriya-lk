@@ -164,14 +164,27 @@ async function count(tbl) {
 }
 
 async function loadBusinesses() {
-  const { data } = await supabase.from('businesses').select('id,name,owner,contact,description,city_id,categories:id(category_id),category:category_id,cities:id(city_id)').order('created_at', { ascending: false });
-  bizBody.innerHTML = data.map(b => `<tr>
+  const { data, error } = await supabase
+    .from('businesses')
+    .select('id,name,owner,contact,description,city_id,category_id')
+    .order('created_at', { ascending: false });
+  if (error) {
+    console.error('Error loading businesses:', error);
+    bizBody.innerHTML = '<tr><td colspan="5">Error loading businesses</td></tr>';
+    return;
+  }
+  const list = data || [];
+  bizBody.innerHTML = list
+    .map(
+      b => `<tr>
     <td>${b.name}</td>
     <td data-id="${b.city_id}">${getName(b.city_id, 'city')}</td>
     <td data-id="${b.category_id}">${getName(b.category_id, 'cat')}</td>
     <td>${b.owner || ''}</td>
     <td><button data-id="${b.id}" class="edit">Edit</button> <button data-id="${b.id}" class="del">Delete</button></td>
-  </tr>`).join('');
+  </tr>`
+    )
+    .join('');
 }
 
 function getName(id, type) {
