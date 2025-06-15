@@ -8,7 +8,7 @@ async function load() {
   const supabase = await getSupabase();
   const { data, error } = await supabase.from('cities').select('id,name').order('name');
   if (error) {
-    list.innerHTML = '<li class="text-red-500">Failed to load cities</li>';
+    list.innerHTML = `<li class="text-red-500">${t('cities_load_error')}</li>`;
     return;
   }
   allCities = data;

@@ -1,132 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Submit Your Business | WedaKiriya.lk</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f8f9fa;
-      padding: 20px;
-    }
-    form {
-      max-width: 600px;
-      margin: 0 auto;
-      background: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-    label {
-      display: block;
-      margin-bottom: 10px;
-      font-weight: bold;
-    }
-    input, textarea {
-      width: 100%;
-      padding: 8px;
-      margin-top: 4px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      box-sizing: border-box;
-    }
-    button {
-      margin-top: 10px;
-      padding: 10px 20px;
-      border: none;
-      background: #0d6efd;
-      color: #fff;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    #status {
-      margin-top: 10px;
-      font-weight: bold;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="submit_heading">Submit Your Business | WedaKiriya.lk</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%94%A7%3C/text%3E%3C/svg%3E">
 </head>
 <body>
-  <h1 style="text-align: center">Submit Your Business / ඔබේ ව්‍යාපාරය යවන්න</h1>
-  <form id="bizForm">
-    <label>Business Name / ව්‍යාපාරයේ නම
-      <input type="text" id="business_name" required />
-    </label>
-    <label>Owner Name / හිමිකරුගේ නම
-      <input type="text" id="owner" required />
-    </label>
-    <label>Category / ව්‍යාපාර වර්ගය
-      <input type="text" id="category" required />
-    </label>
-    <label>Contact Info / දුරකථන හෝ විද්‍යුත් ලිපිනය
-      <input type="text" id="contact" required />
-    </label>
-    <label>Location / නගරය
-      <input type="text" id="location" required />
-    </label>
-    <label>Description / විස්තරය
-      <textarea id="description" rows="4" required></textarea>
-    </label>
-    <button type="submit">Submit / යවන්න</button>
-    <div id="status"></div>
+<nav class="bg-blue-600 fixed w-full top-0 z-50">
+  <div class="container flex items-center justify-between text-white">
+    <a class="font-bold text-lg py-2" href="index.html" aria-label="WedaKiriya home">WedaKiriya.lk</a>
+    <button id="navToggle">&#9776;</button>
+    <div id="navMenu" class="hidden flex items-center">
+      <a class="block py-2" href="index.html" data-i18n="nav_home">Home</a>
+      <a class="block py-2" href="about.html" data-i18n="nav_about">About</a>
+      <a class="block py-2" href="submit.html" data-i18n="nav_submit">Submit Your Business</a>
+      <a class="block py-2" href="contact.html" data-i18n="nav_contact">Contact</a>
+      <a class="block py-2" href="cities.html">Cities</a>
+    </div>
+    <select id="langToggle" class="ml-4 text-gray-900 rounded px-1 py-1">
+      <option value="en">EN</option>
+      <option value="si">සිං</option>
+    </select>
+  </div>
+</nav>
+
+<section class="page-hero text-center">
+  <div class="container">
+    <h1 class="fw-bold heading-shadow mb-0" data-i18n="submit_heading">Submit Your Business</h1>
+  </div>
+</section>
+
+<section class="container py-5 mb-5">
+  <form id="bizForm" class="max-w-2xl mx-auto bg-white p-4 rounded shadow">
+    <div class="mb-3">
+      <label for="business_name" class="form-label" data-i18n="submit_name">Business Name</label>
+      <input type="text" id="business_name" required class="w-full p-2 border rounded" data-i18n-placeholder="submit_name">
+    </div>
+    <div class="mb-3">
+      <label for="owner" class="form-label" data-i18n="submit_owner">Owner Name</label>
+      <input type="text" id="owner" required class="w-full p-2 border rounded" data-i18n-placeholder="submit_owner">
+    </div>
+    <div class="mb-3">
+      <label for="category" class="form-label" data-i18n="submit_category">Category</label>
+      <input type="text" id="category" required class="w-full p-2 border rounded" data-i18n-placeholder="submit_category">
+    </div>
+    <div class="mb-3">
+      <label for="contact" class="form-label" data-i18n="submit_contact">Contact Info</label>
+      <input type="text" id="contact" required class="w-full p-2 border rounded" data-i18n-placeholder="submit_contact">
+    </div>
+    <div class="mb-3">
+      <label for="location" class="form-label" data-i18n="submit_location">Location</label>
+      <input type="text" id="location" required class="w-full p-2 border rounded" data-i18n-placeholder="submit_location">
+    </div>
+    <div class="mb-3">
+      <label for="description" class="form-label" data-i18n="submit_description">Description</label>
+      <textarea id="description" rows="4" required class="w-full p-2 border rounded" data-i18n-placeholder="submit_description"></textarea>
+    </div>
+    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded" data-i18n="submit_button">Submit</button>
+    <div id="status" class="mt-2"></div>
   </form>
+</section>
 
-  <script>
-    (async () => {
-      const statusEl = document.getElementById("status");
+<footer class="bg-primary text-white text-center py-3 border-top small">
+  <div class="container">
+    <p class="mb-1">&copy; 2024 WedaKiriya.lk</p>
+    <a class="text-white" href="submit.html" data-i18n="nav_submit">Submit Your Business</a>
+    <span class="mx-2">|</span>
+    <a class="text-white" href="#">Privacy Policy</a>
+    <span class="mx-2">|</span>
+    <a class="text-white" href="#">Terms of Service</a>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script src="js/translations.js"></script>
+<script>
+AOS.init();
+document.getElementById('navToggle').addEventListener('click', () => document.getElementById('navMenu').classList.toggle('hidden'));
+(async () => {
+  const statusEl = document.getElementById('status');
+  try {
+    const cfgRes = await fetch('config.json');
+    if (!cfgRes.ok) throw new Error('Failed to load config');
+    const cfg = await cfgRes.json();
+    const SUPABASE_URL = cfg.SUPABASE_URL;
+    const SUPABASE_ANON_KEY = cfg.SUPABASE_ANON_KEY;
+    document.getElementById('bizForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = {
+        name: document.getElementById('business_name').value,
+        owner: document.getElementById('owner').value,
+        category: document.getElementById('category').value,
+        contact: document.getElementById('contact').value,
+        location: document.getElementById('location').value,
+        description: document.getElementById('description').value,
+      };
+      statusEl.textContent = t('submitting');
+      statusEl.style.color = 'black';
       try {
-        const cfgRes = await fetch("config.json");
-        if (!cfgRes.ok) throw new Error("Failed to load config");
-        const cfg = await cfgRes.json();
-
-        const SUPABASE_URL = cfg.SUPABASE_URL;
-        const SUPABASE_ANON_KEY = cfg.SUPABASE_ANON_KEY;
-
-        document.getElementById("bizForm").addEventListener("submit", async (e) => {
-          e.preventDefault();
-          const data = {
-            name: document.getElementById("business_name").value,
-            owner: document.getElementById("owner").value,
-            category: document.getElementById("category").value,
-            contact: document.getElementById("contact").value,
-            location: document.getElementById("location").value,
-            description: document.getElementById("description").value,
-          };
-
-          statusEl.textContent = "Submitting...";
-          statusEl.style.color = "black";
-
-          try {
-            const res = await fetch(`${SUPABASE_URL}/rest/v1/businesses`, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                "apikey": SUPABASE_ANON_KEY,
-                "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
-                "Prefer": "return=minimal",
-              },
-              body: JSON.stringify(data),
-            });
-
-            if (res.ok) {
-              statusEl.textContent = "✅ Submitted successfully!";
-              statusEl.style.color = "green";
-              e.target.reset();
-            } else {
-              const errorText = await res.text();
-              statusEl.textContent = "❌ Error: " + errorText;
-              statusEl.style.color = "red";
-            }
-          } catch (err) {
-            statusEl.textContent = "❌ Network error: " + err.message;
-            statusEl.style.color = "red";
-          }
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/businesses`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            apikey: SUPABASE_ANON_KEY,
+            Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+            Prefer: 'return=minimal',
+          },
+          body: JSON.stringify(data),
         });
+        if (res.ok) {
+          statusEl.textContent = t('submit_success');
+          statusEl.style.color = 'green';
+          e.target.reset();
+        } else {
+          const errorText = await res.text();
+          statusEl.textContent = `${t('error_prefix')} ${errorText}`;
+          statusEl.style.color = 'red';
+        }
       } catch (err) {
-        statusEl.textContent = "❌ Error loading config: " + err.message;
-        statusEl.style.color = "red";
+        statusEl.textContent = `${t('network_error')} ${err.message}`;
+        statusEl.style.color = 'red';
       }
-    })();
-  </script>
+    });
+  } catch (err) {
+    statusEl.textContent = `${t('config_error')} ${err.message}`;
+    statusEl.style.color = 'red';
+  }
+})();
+</script>
 </body>
 </html>
