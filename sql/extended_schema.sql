@@ -57,3 +57,8 @@ create table if not exists public.comment_reports (
   reason text,
   created_at timestamptz default now()
 );
+
+-- Additional columns for admin dashboard
+alter table public.listings add column if not exists category text;
+alter table public.listings add column if not exists is_active boolean default true;
+alter table public.reports add column if not exists status text default 'open';
