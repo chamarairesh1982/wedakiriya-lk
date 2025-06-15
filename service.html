@@ -7,6 +7,9 @@
     <meta id="metaOgTitle" property="og:title" content="Service Details">
     <meta id="metaOgDesc" property="og:description" content="Local service information">
     <meta id="metaOgImg" property="og:image" content="images/hero.svg">
+    <meta id="metaOgUrl" property="og:url" content="">
+    <link id="canonicalLink" rel="canonical" href="">
+    <script id="jsonLd" type="application/ld+json"></script>
     <title>Service Details - WedaKiriya.lk</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
@@ -42,19 +45,37 @@ import { getSupabase } from "./js/supabaseClient.js";
     const id = params.get('id');
     const container = document.getElementById('service-details');
     const list = window.servicesData || [];
-    const s = list.find(item => item.id === id);
+    const supabase = await getSupabase();
+    let s = list.find(item => item.id === id);
+    if (!s) {
+        const { data } = await supabase.from('listings').select('*').eq('id', id).single();
+        s = data;
+    }
     if (s) {
         document.title = `${s.name} - WedaKiriya.lk`;
         document.getElementById('metaDesc').setAttribute('content', `${s.name} in ${s.city}. Contact ${s.phone}`);
         document.getElementById('metaOgTitle').setAttribute('content', s.name);
         document.getElementById('metaOgDesc').setAttribute('content', s.description);
+        const url = `service.html?id=${s.id}`;
         document.getElementById('metaOgImg').setAttribute('content', 'images/hero.svg');
+        document.getElementById('metaOgUrl').setAttribute('content', url);
+        document.getElementById('canonicalLink').setAttribute('href', url);
+        document.getElementById('jsonLd').textContent = JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'LocalBusiness',
+          name: s.name,
+          telephone: s.phone,
+          address: { '@type': 'PostalAddress', addressLocality: s.city },
+          url: window.location.href,
+          description: s.description
+        });
         container.innerHTML = `
             <h1 class="mb-3" data-aos="fade-down">${s.name}</h1>
             <p class="text-muted" data-aos="fade-down">${s.city}</p>
             <a href="https://wa.me/94${s.phone.substring(1)}" target="_blank" class="btn btn-success mb-2" data-aos="fade-up">${t('whatsapp_now')}</a>
             <a href="tel:${s.phone}" class="d-block mb-3" data-aos="fade-up">${s.phone}</a>
             <p data-aos="fade-up">${s.description}</p>
+            <div id="gallery" class="gallery" data-aos="fade-up"></div>
             <div class="flex gap-2 my-2" data-aos="fade-up">
               <a aria-label="Share on WhatsApp" class="bg-green-500 text-white px-2 py-1 rounded" target="_blank" id="waShare">WhatsApp</a>
               <a aria-label="Share on Facebook" class="bg-blue-600 text-white px-2 py-1 rounded" target="_blank" id="fbShare">Facebook</a>
@@ -66,17 +87,74 @@ import { getSupabase } from "./js/supabaseClient.js";
                 <div class="mb-3"><input type="email" class="form-control" placeholder="${t('form_email')}"></div>
                 <div class="mb-3"><textarea class="form-control" rows="4" placeholder="${t('form_message')}"></textarea></div>
                 <button type="submit" class="btn btn-primary">${t('send')}</button>
-            </form>`;
+            </form>
+            <div id="comments-section" class="mt-5">
+              <h2>${t('comments_heading')}</h2>
+              <div id="commentsList"></div>
+              <form id="commentForm" class="mt-2">
+                <textarea id="commentText" class="form-control mb-2" data-i18n-placeholder="comment_placeholder"></textarea>
+                <button type="submit" class="btn btn-primary">${t('post_comment')}</button>
+              </form>
+            </div>`;
+          if (typeof applyTranslations === 'function') applyTranslations();
         const shareUrl = location.href;
         document.getElementById('waShare').href = `https://wa.me/?text=${encodeURIComponent(s.name + ' - ' + shareUrl)}`;
         document.getElementById('fbShare').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
-        const supabase = await getSupabase();
+        const { data: imgs } = await supabase
+          .from('listing_images')
+          .select('image_url')
+          .eq('listing_id', id);
+        if (imgs && imgs.length) {
+          const gal = document.getElementById('gallery');
+          imgs.forEach(i => {
+            const url = supabase.storage
+              .from('listing-images')
+              .getPublicUrl(i.image_url).publicUrl;
+            const imgEl = document.createElement('img');
+            imgEl.src = url;
+            imgEl.className = 'gallery-img';
+            gal.appendChild(imgEl);
+          });
+        }
         document.getElementById('reportBtn').onclick = async () => {
           const { data: { user } } = await supabase.auth.getUser();
           if(!user){ alert('Login first'); return; }
           await supabase.from('reports').insert({ listing_id:id, user_id:user.id, reason:'user report' });
           alert('Reported');
         };
+
+        async function loadComments(){
+          const { data } = await supabase.from('comments').select('id,content').eq('listing_id', id).order('created_at');
+          const listEl = document.getElementById('commentsList');
+          listEl.innerHTML = '';
+          (data || []).forEach(c => {
+            const div = document.createElement('div');
+            div.className = 'border p-2 mb-2';
+            div.innerHTML = `<p>${c.content}</p><button class="btn btn-sm btn-link text-red-500 report-comment" data-id="${c.id}">${t('report_comment')}</button>`;
+            listEl.appendChild(div);
+          });
+          document.querySelectorAll('.report-comment').forEach(btn => {
+            btn.onclick = async () => {
+              const { data: { user } } = await supabase.auth.getUser();
+              if(!user){ alert('Login first'); return; }
+              await supabase.from('comment_reports').insert({ comment_id:btn.dataset.id, user_id:user.id, reason:'user report' });
+              alert('Reported');
+            };
+          });
+        }
+
+        await loadComments();
+
+        document.getElementById('commentForm').addEventListener('submit', async e => {
+          e.preventDefault();
+          const txt = document.getElementById('commentText').value.trim();
+          if(!txt) return;
+          const { data: { user } } = await supabase.auth.getUser();
+          if(!user){ alert('Login first'); return; }
+          await supabase.from('comments').insert({ listing_id:id, user_id:user.id, content:txt });
+          document.getElementById('commentText').value = '';
+          await loadComments();
+        });
     } else {
         container.textContent = t('not_found');
     }
