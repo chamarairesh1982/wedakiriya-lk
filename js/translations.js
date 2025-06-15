@@ -123,7 +123,12 @@ window.translations = {
   }
 };
 
-window.currentLang = localStorage.getItem('lang') || 'en';
+const urlParams = new URLSearchParams(window.location.search);
+const paramLang = urlParams.get('lang');
+window.currentLang = paramLang || localStorage.getItem('lang') || 'en';
+if (paramLang) {
+  localStorage.setItem('lang', paramLang);
+}
 
 window.t = function (key) {
   const lang = window.currentLang;
@@ -151,6 +156,10 @@ document.addEventListener('DOMContentLoaded', () => {
     toggle.addEventListener('change', () => {
       window.currentLang = toggle.value;
       localStorage.setItem('lang', window.currentLang);
+      const params = new URLSearchParams(window.location.search);
+      params.set('lang', window.currentLang);
+      const newUrl = window.location.pathname + '?' + params.toString();
+      history.replaceState(null, '', newUrl);
       applyTranslations();
     });
   }
