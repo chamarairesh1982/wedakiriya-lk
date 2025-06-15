@@ -41,3 +41,19 @@ create table if not exists public.reports (
   reason text,
   created_at timestamptz default now()
 );
+
+create table if not exists public.comments (
+  id uuid primary key default gen_random_uuid(),
+  listing_id uuid references public.listings(id) on delete cascade,
+  user_id uuid references public.users(id) on delete set null,
+  content text not null,
+  created_at timestamptz default now()
+);
+
+create table if not exists public.comment_reports (
+  id uuid primary key default gen_random_uuid(),
+  comment_id uuid references public.comments(id) on delete cascade,
+  user_id uuid references public.users(id) on delete set null,
+  reason text,
+  created_at timestamptz default now()
+);
